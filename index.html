@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bayad Ko</title>
+<style>
+:root{
+  --bg:#111;--surface:#1A1A1A;--surface2:#242424;--surface3:#2E2E2E;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#F0EDE6;--text2:#9E9890;--text3:#5A5650;
+  --accent:#E05535;--accent-light:rgba(224,85,53,.15);
+  --green:#3DAA75;--green-light:rgba(61,170,117,.15);
+  --blue:#5A9FE0;--blue-light:rgba(90,159,224,.13);
+  --purple:#9A7AE0;--purple-light:rgba(154,122,224,.15);
+  --amber:#E0A030;--amber-light:rgba(224,160,48,.13);
+  --r:14px;--r-sm:9px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px}
+body{max-width:430px;margin:0 auto;min-height:100vh}
+
+/* Header */
+.app-header{padding:20px 16px 10px;display:flex;align-items:flex-end;justify-content:space-between}
+.app-title{font-size:26px;font-weight:700;letter-spacing:-.5px}
+.app-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.header-month{font-size:13px;color:var(--text3)}
+
+/* Tabs */
+.tab-bar{display:flex;background:var(--surface);border-bottom:.5px solid var(--border);position:sticky;top:0;z-index:100}
+.tab{flex:1;padding:10px 2px;font-size:10px;font-weight:600;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;font-family:var(--font);display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s}
+.tab svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.content{padding-bottom:100px}
+
+/* ── DEADLINE TAB ── */
+.filter-row{display:flex;gap:7px;padding:12px 14px;overflow-x:auto;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.chip{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap;font-family:var(--font);transition:all .15s}
+.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Month block */
+.month-block{background:var(--surface);border-radius:var(--r);margin:0 12px 12px;overflow:hidden;border:.5px solid var(--border)}
+.month-block-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:.5px solid var(--border)}
+.month-block-title{font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.paid-pct-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--green-light);color:var(--green)}
+
+/* Section row (Due on 15th etc) */
+.section-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:.5px solid var(--border);cursor:pointer;user-select:none;transition:background .1s}
+.section-row:active{background:rgba(255,255,255,.03)}
+.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.section-label-txt{font-size:14px;font-weight:600;flex:1}
+/* small checkbox next to label */
+.sec-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:transparent;transition:all .15s}
+.sec-check.all-paid{background:var(--green);border-color:var(--green)}
+.sec-check.all-paid::after{content:'';display:block;width:5px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.section-right{text-align:right;flex-shrink:0}
+.section-amt{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.section-count{font-size:11px;color:var(--text3);margin-top:1px}
+.section-chevron{font-size:14px;color:var(--text3);transition:transform .2s;flex-shrink:0;margin-left:4px}
+.section-chevron.open{transform:rotate(180deg)}
+
+/* Items list */
+.items-list{display:none;background:var(--surface2)}
+.items-list.open{display:block}
+.dl-item{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border-bottom:.5px solid var(--border)}
+.dl-item:last-child{border-bottom:none}
+.dl-check{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-top:1px;background:transparent;transition:all .15s}
+.dl-check.checked{background:var(--green);border-color:var(--green)}
+.dl-check.checked::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.dl-info{flex:1;min-width:0}
+.dl-name{font-size:14px;font-weight:700}
+.dl-name.done{text-decoration:line-through;color:var(--text3)}
+.dl-desc{font-size:12px;color:var(--text3);margin-top:2px}
+.dl-link{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--blue);margin-top:4px;cursor:pointer;border:none;background:none;font-family:var(--font);padding:0}
+.dl-amt{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0;text-align:right}
+.dl-amt.done{text-decoration:line-through;color:var(--text3);font-weight:400}
+
+/* Grand total row */
+.grand-total-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--surface3)}
+.grand-total-lbl{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.grand-total-amt{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
+
+/* ── CREDITOR TAB ── */
+.creditor-card{background:var(--surface);border-bottom:.5px solid var(--border);margin-bottom:2px}
+.creditor-header{display:flex;align-items:center;gap:10px;padding:14px 16px 10px}
+.av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;color:#fff}
+.cred-name{font-size:16px;font-weight:700;flex:1}
+.cred-cycles{font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:4px}
+.cdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.add-item-btn{width:32px;height:32px;border-radius:50%;border:.5px solid var(--border2);background:none;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1;flex-shrink:0}
+.bill-row{padding:10px 16px 10px 58px;position:relative;border-top:.5px solid var(--border)}
+.bill-check{position:absolute;left:16px;top:13px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;background:transparent;transition:all .15s}
+.bill-check.paid{background:var(--green);border-color:var(--green)}
+.bill-check.paid::after{content:'';display:block;width:6px;height:10px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.bill-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.bill-name{font-size:14px;font-weight:600;flex:1}
+.bill-actions{display:flex;gap:2px;flex-shrink:0}
+.icon-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;border-radius:6px;display:flex;align-items:center}
+.icon-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
+.b-15{background:var(--blue-light);color:var(--blue)}
+.b-30{background:var(--accent-light);color:var(--accent)}
+.b-ot{background:var(--amber-light);color:var(--amber)}
+.b-paid{background:var(--green-light);color:var(--green)}
+.b-over{background:var(--accent-light);color:var(--accent)}
+.bill-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+.bill-since{font-size:10px;color:var(--text3)}
+.inst-wrap{display:flex;align-items:center;gap:8px;margin-top:7px}
+.inst-bar{flex:1;height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.inst-fill{height:100%;border-radius:2px;background:var(--purple);transition:width .4s}
+.inst-fill.done{background:var(--green)}
+.inst-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:var(--purple-light);color:var(--purple);white-space:nowrap}
+.inst-pill.done{background:var(--green-light);color:var(--green)}
+.sched-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;cursor:pointer;font-size:11px;font-weight:600;color:var(--blue);background:var(--blue-light);border:none;border-radius:7px;padding:5px 10px;font-family:var(--font)}
+.sched-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.sched-btn.open svg{transform:rotate(180deg)}
+.paid-badge-sm{background:var(--green);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 7px}
+.sched-body{display:none;margin-top:8px;border-radius:var(--r-sm);overflow:hidden;border:.5px solid var(--border)}
+.sched-body.open{display:block}
+.sched-row{display:flex;align-items:center;gap:9px;padding:9px 10px;background:var(--surface2)}
+.sched-row+.sched-row{border-top:.5px solid var(--border)}
+.sched-row.sc-paid{background:rgba(61,170,117,.07)}
+.sc-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;background:var(--surface3);transition:all .15s}
+.sc-check.checked{background:var(--green);border-color:var(--green)}
+.sc-check.checked::after{content:'';display:block;width:5px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.sched-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sched-date{font-size:12px;font-weight:600;flex:1;display:flex;align-items:center;gap:5px}
+.sched-date.done{text-decoration:line-through;color:var(--text3)}
+.today-tag{font-size:9px;font-weight:700;background:var(--accent);color:#fff;border-radius:4px;padding:1px 5px}
+.paid-ts{font-size:9px;color:var(--green);display:block;margin-top:1px;font-style:italic}
+.sched-right{text-align:right;flex-shrink:0}
+.sched-amt{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.sched-amt.done{text-decoration:line-through;color:var(--text3);font-weight:400}
+.sched-status{font-size:10px;color:var(--text3);margin-top:1px}
+.cred-totals{padding:10px 16px 14px;border-top:.5px solid var(--border)}
+.sub-row{display:flex;justify-content:space-between;padding:2px 0}
+.sub-lbl{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.sub-amt{font-size:11px;font-weight:600;color:var(--text2);font-variant-numeric:tabular-nums}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding-top:8px;margin-top:6px;border-top:.5px solid var(--border2)}
+.total-lbl{font-size:12px;color:var(--text3);font-weight:600}
+.total-amt{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
+.total-amt.clear{color:var(--green)}
+
+/* Installments tab */
+.inst-overview{margin:12px 12px 4px;background:var(--purple-light);border:.5px solid rgba(154,122,224,.2);border-radius:var(--r-sm);padding:12px 14px}
+.inst-card{background:var(--surface);border-bottom:.5px solid var(--border);padding:14px 16px;margin-bottom:2px}
+.inst-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.inst-card-name{font-size:15px;font-weight:700}
+.inst-card-cred{font-size:11px;color:var(--text3);margin-top:2px}
+.inst-dots{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:10px}
+.mo{width:22px;height:22px;border-radius:5px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.mo-paid{background:var(--green);color:#fff}
+.mo-cur{background:var(--accent);color:#fff}
+.mo-fut{background:var(--surface3);color:var(--text3)}
+.istat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.istat{background:var(--surface2);border-radius:7px;padding:8px;text-align:center}
+.istat-val{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+.istat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* Summary tab */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}
+.metric{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r-sm);padding:12px 14px}
+.metric-lbl{font-size:11px;color:var(--text3);margin-bottom:4px}
+.metric-val{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
+.metric-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.prog-card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;margin:0 12px 10px}
+.prog-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px}
+.prog-bar{height:7px;background:var(--surface3);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;background:var(--green)}
+.sec-lbl{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:10px 16px 5px}
+
+/* FAB */
+.fab{position:fixed;bottom:24px;right:16px;width:54px;height:54px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(224,85,53,.4);z-index:200;line-height:1}
+.fab:active{transform:scale(.92)}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:flex-end}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border-radius:18px 18px 0 0;padding:20px 16px 36px;width:100%;max-height:92vh;overflow-y:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.modal-title{font-size:17px;font-weight:800}
+.close-btn{width:30px;height:30px;border-radius:50%;background:var(--surface3);border:none;cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center}
+.field{margin-bottom:12px}
+.field label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;font-weight:600}
+.field input,.field select{width:100%;padding:11px 13px;border:.5px solid var(--border2);border-radius:var(--r-sm);background:var(--surface2);color:var(--text);font-size:14px;font-family:var(--font);outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--surface2);border-radius:var(--r-sm);border:.5px solid var(--border2);margin-bottom:12px}
+.tgl-lbl{font-size:13px;font-weight:600}
+.tgl-sub{font-size:11px;color:var(--text3)}
+.toggle{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.tgl-slider{position:absolute;inset:0;background:var(--surface3);border:.5px solid var(--border2);border-radius:12px;cursor:pointer;transition:.2s}
+.tgl-slider:before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:var(--text3);left:3px;top:3px;transition:.2s}
+.toggle input:checked+.tgl-slider{background:var(--purple);border-color:var(--purple)}
+.toggle input:checked+.tgl-slider:before{transform:translateX(18px);background:#fff}
+.cond{display:none;background:var(--surface2);border:.5px solid var(--border2);border-radius:var(--r-sm);padding:12px;margin-bottom:12px}
+.cond.show{display:block}
+.locked-badge{display:flex;align-items:center;gap:8px;padding:10px 13px;background:var(--green-light);border:.5px solid rgba(61,170,117,.25);border-radius:var(--r-sm);margin-bottom:12px}
+.locked-name{font-size:14px;font-weight:700;color:var(--green);flex:1}
+.btn-row{display:flex;gap:8px;margin-top:16px}
+.btn{flex:1;padding:12px;border-radius:var(--r-sm);font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:var(--font)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-ghost{background:var(--surface2);color:var(--text2)}
+.empty{text-align:center;padding:48px 20px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div><div class="app-title">Bayad Ko</div><div class="app-sub">Bills &amp; payables tracker</div></div>
+  <div class="header-month" id="hdr-month"></div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab" data-tab="creditors">
+    <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.85"/></svg>
+    Creditor Hall
+  </button>
+  <button class="tab active" data-tab="cycles">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Deadline Dread
+  </button>
+  <button class="tab" data-tab="installments">
+    <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    Installments
+  </button>
+  <button class="tab" data-tab="summary">
+    <svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>
+    Summary
+  </button>
+</div>
+
+<div class="content" id="content"></div>
+<button class="fab" id="fab">+</button>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">Add Payable</div>
+      <button class="close-btn" id="modal-close">✕</button>
+    </div>
+    <div id="locked-wrap" style="display:none" class="locked-badge">
+      <span>🔒</span><span class="locked-name" id="locked-name"></span><span style="font-size:11px;color:var(--green);opacity:.7">Adding to this creditor</span>
+    </div>
+    <div class="field" id="cred-field">
+      <label>Creditor / Person owed</label>
+      <input id="f-cred" placeholder="e.g. BDO, Ate Nena, Meralco">
+    </div>
+    <div class="field"><label>Description</label><input id="f-desc" placeholder="e.g. iPhone 16 installment"></div>
+    <div class="field"><label>Amount (₱)</label><input id="f-amt" type="number" placeholder="0.00" step="0.01" inputmode="decimal"></div>
+    <div class="field"><label>Due Cycle</label>
+      <select id="f-cycle">
+        <option value="15th">15th of the month</option>
+        <option value="30th">30th of the month</option>
+        <option value="one-time">One-time payment</option>
+      </select>
+    </div>
+    <div class="cond" id="ot-f"><div class="field" style="margin-bottom:0"><label>Due Date</label><input id="f-duedate" type="date"></div></div>
+    <div class="cond show" id="start-f"><div class="field" style="margin-bottom:0"><label>Start Month</label><input id="f-start" type="month"></div></div>
+    <div class="field"><label>Category</label>
+      <select id="f-cat">
+        <option value="utility">Utility</option>
+        <option value="loan">Loan / Debt</option>
+        <option value="personal">Personal</option>
+        <option value="subscription">Subscription</option>
+        <option value="installment">Installment</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="toggle-row">
+      <div><div class="tgl-lbl">Installment Plan</div><div class="tgl-sub">Fixed number of months</div></div>
+      <label class="toggle"><input type="checkbox" id="f-is-inst"><span class="tgl-slider"></span></label>
+    </div>
+    <div class="cond" id="inst-f">
+      <div class="field-row">
+        <div class="field" style="margin-bottom:0"><label>Total Months</label><input id="f-total" type="number" placeholder="24" min="1" inputmode="numeric"></div>
+        <div class="field" style="margin-bottom:0"><label>Months Paid</label><input id="f-paidmo" type="number" placeholder="0" min="0" inputmode="numeric"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MF=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const NOW=new Date(),CY=NOW.getFullYear(),CM=NOW.getMonth(),CD=NOW.getDate();
+const PAD=n=>String(n).padStart(2,'0');
+const TODAY=`${CY}-${PAD(CM+1)}-${PAD(CD)}`;
+
+function fmt(n){return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtDate(s){if(!s)return'';const[y,m,d]=s.split('-').map(Number);return MS[m-1]+' '+d+', '+y;}
+function fmtMonth(s){if(!s)return'';const[y,m]=s.split('-').map(Number);return MS[m-1]+' '+y;}
+function parseYM(s){if(!s)return null;const[y,m]=s.split('-').map(Number);return{year:y,month:m-1};}
+function groupBy(arr,k){return arr.reduce((a,b)=>{(a[b[k]]||(a[b[k]]=[])).push(b);return a;},{});}
+function isActive(item){if(item.paid)return false;if(item.isInstallment&&(item.monthsPaid||0)>=(item.totalMonths||0))return false;return true;}
+function remMo(item){return Math.max(0,(item.totalMonths||0)-(item.monthsPaid||0));}
+function instPct(item){if(!item.totalMonths)return 0;return Math.min(100,Math.round((item.monthsPaid||0)/item.totalMonths*100));}
+
+const AVCOLS=['#C84B2F','#1A5C9E','#1D6B4A','#5C3A9E','#9B6000','#8B2050','#2E6B8A','#5A6B1A'];
+function avCol(name){let h=0;for(const c of name)h=(h*31+c.charCodeAt(0))%AVCOLS.length;return AVCOLS[h];}
+function initials(s){return s.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+
+function genSched(item){
+  const sched=[];const sYM=parseYM(item.startDate||`${CY}-${PAD(CM+1)}`);
+  if(item.cycle==='one-time'){if(item.dueDate)sched.push({date:item.dueDate,amount:+item.amount,idx:0});return sched;}
+  const day=item.cycle==='15th'?15:30;
+  let start=sYM,count;
+  if(item.isInstallment){count=item.totalMonths||1;}
+  else{const bk=CY*12+CM-2;const st=sYM.year*12+sYM.month;const ls=Math.max(st,bk);start={year:Math.floor(ls/12),month:ls%12};count=20;}
+  for(let i=0;i<count;i++){
+    const y=start.year+Math.floor((start.month+i)/12);const m=(start.month+i)%12;
+    const last=new Date(y,m+1,0).getDate();const d=Math.min(day,last);
+    sched.push({date:`${y}-${PAD(m+1)}-${PAD(d)}`,amount:+item.amount,idx:i});
+  }
+  return sched;
+}
+
+// ── Data ──────────────────────────────────────────────────────────────
+const SAMPLE=[
+  {id:1,creditor:'X - Credit Card',desc:'iPhone 16 Pro Max',amount:3162.08,cycle:'30th',cat:'installment',paid:false,isInstallment:true,totalMonths:24,monthsPaid:14,startDate:'2025-03'},
+  {id:2,creditor:'X - Credit Card',desc:'LANY Concert',amount:5052.67,cycle:'30th',cat:'other',paid:false,isInstallment:true,totalMonths:6,monthsPaid:1,startDate:'2026-04'},
+  {id:3,creditor:'X - Credit Card',desc:'2go to Caticlan',amount:3333.17,cycle:'30th',cat:'other',paid:false,isInstallment:true,totalMonths:3,monthsPaid:0,startDate:'2026-05'},
+  {id:4,creditor:'X - Credit Card',desc:'2go back to Manila',amount:4341.33,cycle:'15th',cat:'other',paid:false,isInstallment:true,totalMonths:3,monthsPaid:0,startDate:'2026-06'},
+  {id:5,creditor:'X - Credit Card',desc:'De la Salle Medical Hospital Bills',amount:21667,cycle:'15th',cat:'loan',paid:false,isInstallment:true,totalMonths:6,monthsPaid:0,startDate:'2026-06'},
+  {id:6,creditor:'Dubs UB',desc:'Personal loan repayment',amount:5000,cycle:'15th',cat:'personal',paid:false,isInstallment:false,startDate:'2026-01'},
+  {id:7,creditor:'Dubs UB',desc:'Borrowed for groceries',amount:2500,cycle:'30th',cat:'personal',paid:false,isInstallment:false,startDate:'2026-03'},
+  {id:8,creditor:'Meralco',desc:'Electric bill',amount:3200,cycle:'30th',cat:'utility',paid:false,isInstallment:false,startDate:'2026-01'},
+  {id:9,creditor:'PLDT',desc:'Broadband & phone',amount:1899,cycle:'15th',cat:'utility',paid:false,isInstallment:false,startDate:'2026-01'},
+  {id:10,creditor:'BDO',desc:'iPhone 16 Pro',amount:3500,cycle:'15th',cat:'installment',paid:false,isInstallment:true,totalMonths:24,monthsPaid:6,startDate:'2024-11'},
+  {id:11,creditor:'Ate Nena',desc:'Personal loan',amount:2500,cycle:'15th',cat:'personal',paid:false,isInstallment:true,totalMonths:12,monthsPaid:4,startDate:'2025-02'},
+  {id:12,creditor:'Netflix',desc:'Monthly sub',amount:549,cycle:'15th',cat:'subscription',paid:false,isInstallment:false,startDate:'2026-01'},
+  {id:13,creditor:'Pag-IBIG',desc:'Housing loan',amount:4300,cycle:'15th',cat:'loan',paid:false,isInstallment:false,startDate:'2022-06'},
+  {id:14,creditor:'Globe',desc:'Postpaid plan',amount:1299,cycle:'15th',cat:'utility',paid:false,isInstallment:false,startDate:'2026-03'},
+  {id:15,creditor:'BDO',desc:'Laptop installment',amount:2800,cycle:'15th',cat:'installment',paid:false,isInstallment:true,totalMonths:12,monthsPaid:10,startDate:'2025-07'},
+  {id:16,creditor:'Kuya Jun',desc:'Cash borrowed',amount:3000,cycle:'one-time',cat:'personal',paid:false,dueDate:`${CY}-${PAD(CM+1)}-20`},
+  {id:17,creditor:'SSS',desc:'Quarterly contribution',amount:1500,cycle:'one-time',cat:'other',paid:false,dueDate:`${CY}-${PAD(CM+1)}-28`},
+];
+
+let data,nextId;
+try{const s=localStorage.getItem('bayadko_v6');if(s){const p=JSON.parse(s);data=p.data;nextId=p.nextId;}else{data=JSON.parse(JSON.stringify(SAMPLE));nextId=200;}}
+catch(e){data=JSON.parse(JSON.stringify(SAMPLE));nextId=200;}
+
+let activeTab='cycles',activeFilter='current',editId=null;
+const openSched=new Set();
+// sections open in deadline tab: key = "15th"|"30th"|"one-time"
+const openSections=new Set(['15th','30th','one-time']); // default open
+
+function save(){try{localStorage.setItem('bayadko_v6',JSON.stringify({data,nextId}))}catch(e){}}
+
+document.getElementById('hdr-month').textContent=MS[CM]+' '+CY;
+
+// ── CYCLES TAB ────────────────────────────────────────────────────────
+function renderCycles(){
+  // Filter
+  const chips=['current','all','15th','30th','one-time'].map(f=>`
+    <button class="chip ${activeFilter===f?'active':''}" data-filter="${f}">
+      ${f==='current'?MS[CM]+' '+CY:f==='all'?'All':f==='one-time'?'One-time':f}
+    </button>`).join('');
+
+  function itemMatchesFilter(item){
+    if(activeFilter==='all')return true;
+    if(activeFilter==='15th')return item.cycle==='15th';
+    if(activeFilter==='30th')return item.cycle==='30th';
+    if(activeFilter==='one-time')return item.cycle==='one-time';
+    // current = this month
+    if(item.cycle==='one-time'){
+      if(!item.dueDate)return false;
+      const[y,m]=item.dueDate.split('-').map(Number);return y===CY&&m-1===CM;
+    }
+    return true;
+  }
+
+  const filtered=data.filter(itemMatchesFilter);
+  const items15=filtered.filter(i=>i.cycle==='15th');
+  const items30=filtered.filter(i=>i.cycle==='30th');
+  const itemsOT=filtered.filter(i=>i.cycle==='one-time').sort((a,b)=>(a.dueDate||'').localeCompare(b.dueDate||''));
+
+  // Paid counts for section-level check
+  function allPaid(items){return items.length>0&&items.every(i=>!isActive(i));}
+  function paidCount(items){return items.filter(i=>!isActive(i)).length;}
+
+  function buildSection(key,label,dotColor,amtColor,items){
+    if(!items.length)return'';
+    const total=items.filter(isActive).reduce((s,i)=>s+(+i.amount),0);
+    const pc=paidCount(items);
+    const ap=allPaid(items);
+    const isOpen=openSections.has(key);
+
+    const rows=items.map(item=>{
+      const done=!isActive(item);
+      const rem=item.isInstallment?remMo(item):null;
+      let desc=item.desc;
+      if(rem!==null&&rem>0)desc+=` · ${rem} mo left`;
+      return`<div class="dl-item">
+        <div class="dl-check ${done?'checked':''}" data-dl-toggle="${item.id}"></div>
+        <div class="dl-info">
+          <div class="dl-name ${done?'done':''}">${item.creditor}</div>
+          <div class="dl-desc">${desc}${item.cycle==='one-time'&&item.dueDate?` · ${fmtDate(item.dueDate)}`:''}</div>
+          <button class="dl-link" data-goto="${item.creditor}">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            View in Hall of Fame
+          </button>
+        </div>
+        <div class="dl-amt ${done?'done':''}" style="${done?'':'color:'+amtColor}">${fmt(+item.amount)}</div>
+      </div>`;
+    }).join('');
+
+    return`<div class="section-row" data-section="${key}">
+      <span class="section-dot" style="background:${dotColor}"></span>
+      <span class="section-label-txt">${label}</span>
+      <div class="sec-check ${ap?'all-paid':''}"></div>
+      <div class="section-right">
+        <div class="section-amt" style="color:${amtColor}">${fmt(total)}</div>
+        <div class="section-count">${items.length} item${items.length!==1?'s':''}${pc>0?` · ${pc} paid`:''}</div>
+      </div>
+      <span class="section-chevron ${isOpen?'open':''}">▾</span>
+    </div>
+    <div class="items-list ${isOpen?'open':''}" id="sec-${key}">${rows}</div>`;
+  }
+
+  // Month totals for banner
+  const allActive=filtered.filter(isActive);
+  const grandTotal=allActive.reduce((s,i)=>s+(+i.amount),0);
+  const grandPaid=filtered.filter(i=>!isActive(i)).reduce((s,i)=>s+(+i.amount),0);
+  const grandAll=grandTotal+grandPaid;
+  const pct=grandAll>0?Math.round(grandPaid/grandAll*100):0;
+
+  const showMonth=activeFilter==='current'||activeFilter==='all';
+  const show15=activeFilter!=='one-time'&&activeFilter!=='30th';
+  const show30=activeFilter!=='one-time'&&activeFilter!=='15th';
+  const showOT=activeFilter!=='15th'&&activeFilter!=='30th';
+
+  const monthBlock=showMonth?`<div class="month-block">
+    <div class="month-block-header">
+      <div class="month-block-title">${MF[CM]} ${CY}</div>
+      <div class="paid-pct-badge">${pct}% paid</div>
+    </div>
+    ${show15?buildSection('15th','Due on the 15th','var(--blue)','var(--blue)',items15):''}
+    ${show30?buildSection('30th','Due on the 30th','var(--accent)','var(--accent)',items30):''}
+    ${showOT?buildSection('one-time','One-time this month','var(--amber)','var(--amber)',itemsOT):''}
+    <div class="grand-total-row">
+      <div class="grand-total-lbl">Total still due</div>
+      <div class="grand-total-amt">${fmt(grandTotal)}</div>
+    </div>
+  </div>`:`<div class="month-block">
+    ${show15?buildSection('15th','Due on the 15th','var(--blue)','var(--blue)',items15):''}
+    ${show30?buildSection('30th','Due on the 30th','var(--accent)','var(--accent)',items30):''}
+    ${showOT?buildSection('one-time','One-time','var(--amber)','var(--amber)',itemsOT):''}
+    <div class="grand-total-row">
+      <div class="grand-total-lbl">Total</div>
+      <div class="grand-total-amt">${fmt(grandTotal)}</div>
+    </div>
+  </div>`;
+
+  return`<div class="filter-row">${chips}</div>${monthBlock}`;
+}
+
+// ── CREDITORS TAB ─────────────────────────────────────────────────────
+function renderCreditors(){
+  const grouped=groupBy(data,'creditor');
+  const keys=Object.keys(grouped);
+  if(!keys.length)return`<div class="empty" style="color:var(--text3);text-align:center;padding:48px 20px">No payables yet.<br>Tap + to add one.</div>`;
+
+  return keys.map(creditor=>{
+    const items=grouped[creditor];
+    const col=avCol(creditor);
+    const cycles=[...new Set(items.map(i=>i.cycle))];
+    const cycleDots=cycles.filter(c=>c!=='one-time').map(c=>
+      `<span class="cdot" style="background:${c==='15th'?'var(--blue)':'var(--accent)'}"></span>${c}`).join(' ');
+
+    const rows=items.map(item=>{
+      const done=!isActive(item);
+      const rem=remMo(item);
+      const pct=instPct(item);
+      const isDoneInst=item.isInstallment&&rem===0;
+      const overdue=!done&&item.cycle==='one-time'&&item.dueDate&&item.dueDate<TODAY;
+      const bCls=done?'b-paid':overdue?'b-over':item.cycle==='15th'?'b-15':item.cycle==='30th'?'b-30':'b-ot';
+      const bTxt=done?'PAID':overdue?'OVERDUE':item.cycle==='one-time'?'ONE-TIME':'DUE '+item.cycle;
+
+      const sched=genSched(item);
+      const cp=item.cutoffPaid||{};
+      const ep={...cp};
+      if(item.isInstallment&&(item.monthsPaid||0)>0){
+        for(let i=0;i<(item.monthsPaid||0)&&i<sched.length;i++)if(!ep[sched[i].date])ep[sched[i].date]='__auto__';
+      }
+      const paidCnt=Object.keys(ep).length;
+      const isOpen=openSched.has(item.id);
+
+      const schedRows=sched.map(s=>{
+        const pTs=ep[s.date];const isAuto=pTs==='__auto__';const isPaid=!!pTs;
+        const isPast=!isPaid&&s.date<TODAY;const isTod=!isPaid&&s.date===TODAY;
+        const dc=item.cycle==='15th'?'var(--blue)':'var(--accent)';
+        const[sy,sm,sd]=s.date.split('-').map(Number);const lbl=MS[sm-1]+' '+sd+', '+sy;
+        let pNote='';
+        if(isPaid&&!isAuto){const d=new Date(pTs);const mo=MS[d.getMonth()],dy=d.getDate(),yr=d.getFullYear();let h=d.getHours(),mn=String(d.getMinutes()).padStart(2,'0');const ap=h>=12?'PM':'AM';h=h%12||12;pNote=`<span class="paid-ts">Paid ${mo} ${dy}, ${yr} ${h}:${mn} ${ap}</span>`;}
+        else if(isPaid&&isAuto)pNote=`<span class="paid-ts">From installment count</span>`;
+        return`<div class="sched-row ${isPaid?'sc-paid':''}">
+          <div class="sc-check ${isPaid?'checked':''}" data-sc="${item.id}" data-sc-date="${s.date}"></div>
+          <span class="sched-dot" style="background:${isPaid?'var(--green)':isPast?'var(--text3)':dc}"></span>
+          <div style="flex:1;min-width:0">
+            <div class="sched-date ${isPaid?'done':''}">${lbl}
+              ${isTod?`<span class="today-tag">TODAY</span>`:''}
+            </div>${pNote}
+          </div>
+          <div class="sched-right">
+            <div class="sched-amt ${isPaid?'done':''}" style="${isPaid?'':'color:'+dc}">${fmt(s.amount)}</div>
+            <div class="sched-status">${isPaid?'paid':isPast?'past due':isTod?'due today':'upcoming'}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+      const schedSec=sched.length?`<button class="sched-btn ${isOpen?'open':''}" data-sched="${item.id}">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        Show payment dates (${sched.length})${paidCnt?` <span class="paid-badge-sm">${paidCnt} paid</span>`:''}
+      </button>
+      <div class="sched-body ${isOpen?'open':''}" id="sched-${item.id}">${schedRows}</div>`:'';
+
+      return`<div class="bill-row">
+        <div class="bill-check ${done?'paid':''}" data-toggle="${item.id}"></div>
+        <div class="bill-top">
+          <div class="bill-name" style="${done?'text-decoration:line-through;color:var(--text3)':''}">${item.desc}</div>
+          <div style="display:flex;align-items:flex-start;gap:4px;flex-shrink:0">
+            <div style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;${done?'text-decoration:line-through;color:var(--text3)':''}">
+              ${fmt(item.amount)}${item.isInstallment?`<span style="font-size:10px;font-weight:400;color:var(--text3)">/mo</span>`:''}
+            </div>
+            <div class="bill-actions">
+              <button class="icon-btn" data-edit="${item.id}"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              <button class="icon-btn" data-del="${item.id}" style="color:var(--accent)"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="bill-meta">
+          <span class="badge ${bCls}">${bTxt}</span>
+          ${item.cycle==='one-time'&&item.dueDate?`<span class="bill-since">${fmtDate(item.dueDate)}</span>`:
+            item.startDate&&item.cycle!=='one-time'?`<span class="bill-since">· since ${fmtMonth(item.startDate)}</span>`:''}
+        </div>
+        ${item.isInstallment?`<div class="inst-wrap">
+          <div class="inst-bar"><div class="inst-fill ${rem===0?'done':''}" style="width:${pct}%"></div></div>
+          <span class="inst-pill ${rem===0?'done':''}">${rem===0?'Fully paid':rem+' mo left'}</span>
+        </div>`:''}
+        ${schedSec}
+      </div>`;
+    }).join('');
+
+    const active=items.filter(isActive);
+    const t15=active.filter(i=>i.cycle==='15th').reduce((s,i)=>s+(+i.amount),0);
+    const t30=active.filter(i=>i.cycle==='30th').reduce((s,i)=>s+(+i.amount),0);
+    const tOT=active.filter(i=>i.cycle==='one-time').reduce((s,i)=>s+(+i.amount),0);
+    const tAll=active.reduce((s,i)=>s+(+i.amount),0);
+
+    return`<div class="creditor-card">
+      <div class="creditor-header">
+        <div class="av" style="background:${col}">${initials(creditor)}</div>
+        <div style="flex:1;min-width:0">
+          <div class="cred-name">${creditor}</div>
+          <div class="cred-cycles">${cycleDots||cycles.join(', ')}</div>
+        </div>
+        <button class="add-item-btn" data-add-to="${creditor}">+</button>
+      </div>
+      ${rows}
+      <div class="cred-totals">
+        ${t15>0?`<div class="sub-row"><span class="sub-lbl"><span class="cdot" style="background:var(--blue)"></span>Due every 15th</span><span class="sub-amt">${fmt(t15)}</span></div>`:''}
+        ${t30>0?`<div class="sub-row"><span class="sub-lbl"><span class="cdot" style="background:var(--accent)"></span>Due every 30th</span><span class="sub-amt">${fmt(t30)}</span></div>`:''}
+        ${tOT>0?`<div class="sub-row"><span class="sub-lbl"><span class="cdot" style="background:var(--amber)"></span>One-time</span><span class="sub-amt">${fmt(tOT)}</span></div>`:''}
+        <div class="total-row">
+          <span class="total-lbl">Total monthly</span>
+          <span class="total-amt ${tAll===0?'clear':''}">${fmt(tAll)}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── INSTALLMENTS TAB ──────────────────────────────────────────────────
+function renderInstallments(){
+  const items=data.filter(i=>i.isInstallment);
+  if(!items.length)return`<div class="empty" style="color:var(--text3);text-align:center;padding:48px 20px">No installment plans yet.</div>`;
+  const active=items.filter(i=>remMo(i)>0);
+  const done=items.filter(i=>remMo(i)===0);
+  const tMo=active.reduce((s,i)=>s+(+i.amount),0);
+  const tRem=active.reduce((s,i)=>s+remMo(i)*(+i.amount),0);
+
+  function card(item){
+    const rem=remMo(item);const total=item.totalMonths||0;const paid=item.monthsPaid||0;
+    const pct=instPct(item);const isDone=rem===0;const col=avCol(item.creditor);
+    const sYM=parseYM(item.startDate);
+    let endStr='';
+    if(sYM&&rem>0){const fY=sYM.year+Math.floor((sYM.month+paid+rem-1)/12);const fM=((sYM.month+paid+rem-1)%12+12)%12;endStr=MS[fM]+' '+fY;}
+    let dots='';
+    for(let m=0;m<total;m++){
+      let cls='mo-fut';
+      if(sYM){const dY=sYM.year+Math.floor((sYM.month+m)/12);const dM=(sYM.month+m)%12;cls=m<paid?'mo-paid':(dY<CY||(dY===CY&&dM<=CM))&&m===paid?'mo-cur':'mo-fut';}
+      else cls=m<paid?'mo-paid':m===paid?'mo-cur':'mo-fut';
+      dots+=`<div class="mo ${cls}" title="Month ${m+1}">${m+1}</div>`;
+    }
+    return`<div class="inst-card">
+      <div class="inst-card-top">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div class="av" style="width:36px;height:36px;font-size:11px;background:${col}">${initials(item.creditor)}</div>
+          <div><div class="inst-card-name">${item.desc}</div><div class="inst-card-cred">${item.creditor}${item.startDate?' · '+fmtMonth(item.startDate):''}</div></div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:15px;font-weight:800;color:${isDone?'var(--green)':'var(--accent)'}">${isDone?'Complete':rem+' mo'}</div>
+          ${endStr&&!isDone?`<div style="font-size:10px;color:var(--text3)">ends ${endStr}</div>`:''}
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px">
+          <span style="color:var(--text3)">${paid} of ${total} months</span>
+          <span style="font-weight:800;color:${isDone?'var(--green)':'var(--purple)'}">${pct}%</span>
+        </div>
+        <div class="prog-bar" style="height:5px"><div class="prog-fill" style="width:${pct}%;background:${isDone?'var(--green)':'var(--purple)'}"></div></div>
+      </div>
+      <div class="inst-dots">${dots}</div>
+      <div class="istat-grid">
+        <div class="istat"><div class="istat-val">${fmt(item.amount)}</div><div class="istat-lbl">per month</div></div>
+        <div class="istat"><div class="istat-val" style="color:var(--green)">${fmt(paid*(+item.amount))}</div><div class="istat-lbl">paid total</div></div>
+        <div class="istat"><div class="istat-val" style="color:${isDone?'var(--green)':'var(--accent)'}">${fmt(rem*(+item.amount))}</div><div class="istat-lbl">${isDone?'fully paid':'still owed'}</div></div>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:10px;justify-content:flex-end">
+        ${!isDone?`<button class="btn btn-ghost" style="flex:none;padding:6px 12px;font-size:12px;background:var(--green-light);color:var(--green)" data-mark="${item.id}">✓ Mark month paid</button>`:''}
+        <button class="btn btn-ghost" style="flex:none;padding:6px 12px;font-size:12px" data-edit="${item.id}">✏ Edit</button>
+        <button class="btn btn-ghost" style="flex:none;padding:6px 12px;font-size:12px;color:var(--accent)" data-del="${item.id}">🗑</button>
+      </div>
+    </div>`;
+  }
+
+  return`<div class="inst-overview">
+    <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Active Plans — ${active.length}</div>
+    <div style="display:flex;gap:16px">
+      <div><div style="font-size:20px;font-weight:800;font-variant-numeric:tabular-nums">${fmt(tMo)}</div><div style="font-size:10px;color:var(--text3)">per month</div></div>
+      <div style="width:.5px;background:rgba(154,122,224,.25)"></div>
+      <div><div style="font-size:20px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums">${fmt(tRem)}</div><div style="font-size:10px;color:var(--text3)">total remaining</div></div>
+    </div>
+  </div>
+  ${active.length?`<div class="sec-lbl">Active</div>${active.map(card).join('')}`:''}
+  ${done.length?`<div class="sec-lbl">Completed</div>${done.map(card).join('')}`:''}`;
+}
+
+// ── SUMMARY TAB ───────────────────────────────────────────────────────
+function renderSummary(){
+  const active=data.filter(isActive);
+  const owed=active.reduce((s,i)=>s+(+i.amount),0);
+  const doneItems=data.filter(i=>!isActive(i));
+  const paid=doneItems.reduce((s,i)=>s+(+i.amount),0);
+  const total=owed+paid;const pct=total>0?Math.round(paid/total*100):0;
+  const t15=active.filter(i=>i.cycle==='15th').reduce((s,i)=>s+(+i.amount),0);
+  const t30=active.filter(i=>i.cycle==='30th').reduce((s,i)=>s+(+i.amount),0);
+  const tOT=active.filter(i=>i.cycle==='one-time').reduce((s,i)=>s+(+i.amount),0);
+  const rows=data.map(item=>{const act=isActive(item);const col=avCol(item.creditor);
+    return`<div style="background:var(--surface);border-bottom:.5px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px">
+      <div class="av" style="width:34px;height:34px;font-size:11px;background:${col};flex-shrink:0">${initials(item.creditor)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;${!act?'text-decoration:line-through;color:var(--text3)':''}">${item.desc}</div>
+        <div style="font-size:11px;color:var(--text3)">${item.creditor}
+          <span class="badge ${act?item.cycle==='15th'?'b-15':item.cycle==='30th'?'b-30':'b-ot':'b-paid'}" style="margin-left:4px">${act?item.cycle==='one-time'?'ONE-TIME':'DUE '+item.cycle:'DONE'}</span>
+        </div>
+        ${item.isInstallment?`<span class="inst-pill ${remMo(item)===0?'done':''}" style="font-size:10px;margin-top:3px;display:inline-block">${remMo(item)===0?'Done':remMo(item)+' mo left'}</span>`:''}
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:${act?'var(--accent)':'var(--green)'}">${fmt(item.amount)}</div>
+        <div style="font-size:10px;color:var(--text3)">${item.cycle==='one-time'?'one-time':'due '+item.cycle}</div>
+      </div>
+    </div>`;}).join('');
+  return`<div class="metrics-grid">
+    <div class="metric"><div class="metric-lbl">Still Owed</div><div class="metric-val" style="color:var(--accent)">${fmt(owed)}</div><div class="metric-sub">${active.length} active</div></div>
+    <div class="metric"><div class="metric-lbl">Settled</div><div class="metric-val" style="color:var(--green)">${fmt(paid)}</div><div class="metric-sub">${pct}% done</div></div>
+    <div class="metric"><div class="metric-lbl">Due 15th</div><div class="metric-val" style="font-size:16px">${fmt(t15)}</div><div class="metric-sub">this month</div></div>
+    <div class="metric"><div class="metric-lbl">Due 30th</div><div class="metric-val" style="font-size:16px">${fmt(t30)}</div><div class="metric-sub">this month</div></div>
+  </div>
+  ${tOT>0?`<div style="margin:0 12px 10px;background:var(--amber-light);border:.5px solid rgba(224,160,48,.2);border-radius:var(--r-sm);padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--amber)">One-time payments due</span><span style="font-size:16px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums">${fmt(tOT)}</span></div>`:''}
+  <div class="prog-card"><div class="prog-head"><span style="color:var(--text2)">Overall progress</span><span style="font-weight:800">${pct}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>
+  <div class="sec-lbl">All Payables</div>${rows}`;
+}
+
+// ── Render ────────────────────────────────────────────────────────────
+function render(){
+  const map={creditors:renderCreditors,cycles:renderCycles,installments:renderInstallments,summary:renderSummary};
+  document.getElementById('content').innerHTML=(map[activeTab]||renderCycles)();
+  document.querySelectorAll('[data-tab]').forEach(el=>el.classList.toggle('active',el.dataset.tab===activeTab));
+  bindEvents();
+}
+
+function bindEvents(){
+  // tabs
+  document.querySelectorAll('[data-tab]').forEach(el=>el.onclick=()=>{activeTab=el.dataset.tab;render();});
+  // filter chips
+  document.querySelectorAll('[data-filter]').forEach(el=>el.onclick=()=>{activeFilter=el.dataset.filter;render();});
+  // section expand/collapse
+  document.querySelectorAll('[data-section]').forEach(el=>el.onclick=()=>{
+    const k=el.dataset.section;
+    if(openSections.has(k))openSections.delete(k);else openSections.add(k);render();
+  });
+  // deadline toggle
+  document.querySelectorAll('[data-dl-toggle]').forEach(el=>el.onclick=e=>{
+    e.stopPropagation();const item=data.find(d=>d.id===+el.dataset.dlToggle);if(item){item.paid=!item.paid;save();render();}
+  });
+  // goto Hall of Fame
+  document.querySelectorAll('[data-goto]').forEach(el=>el.onclick=e=>{
+    e.stopPropagation();const cred=el.dataset.goto;activeTab='creditors';render();
+    setTimeout(()=>{
+      const cards=document.querySelectorAll('.creditor-card');
+      for(const c of cards){const n=c.querySelector('.cred-name');if(n&&n.textContent.trim()===cred){c.scrollIntoView({behavior:'smooth',block:'start'});c.style.outline='2px solid var(--accent)';c.style.outlineOffset='2px';setTimeout(()=>{c.style.outline='';c.style.outlineOffset='';},1500);break;}}
+    },80);
+  });
+  // creditor hall toggle/edit/del
+  document.querySelectorAll('[data-toggle]').forEach(el=>el.onclick=()=>{const item=data.find(d=>d.id===+el.dataset.toggle);if(item){item.paid=!item.paid;save();render();}});
+  document.querySelectorAll('[data-del]').forEach(el=>el.onclick=()=>{if(confirm('Remove this payable?')){data=data.filter(d=>d.id!==+el.dataset.del);save();render();}});
+  document.querySelectorAll('[data-edit]').forEach(el=>el.onclick=()=>openModal(+el.dataset.edit));
+  document.querySelectorAll('[data-add-to]').forEach(el=>el.onclick=()=>openModal(null,el.dataset.addTo));
+  // sched toggle
+  document.querySelectorAll('[data-sched]').forEach(el=>el.onclick=e=>{e.stopPropagation();const id=+el.dataset.sched;if(openSched.has(id))openSched.delete(id);else openSched.add(id);render();});
+  // cutoff check
+  document.querySelectorAll('[data-sc]').forEach(el=>el.onclick=e=>{
+    e.stopPropagation();const id=+el.dataset.sc,date=el.dataset.scDate;
+    const item=data.find(d=>d.id===id);if(!item)return;
+    if(!item.cutoffPaid)item.cutoffPaid={};
+    if(item.cutoffPaid[date])delete item.cutoffPaid[date];else item.cutoffPaid[date]=new Date().toISOString();
+    save();render();
+  });
+  // mark month
+  document.querySelectorAll('[data-mark]').forEach(el=>el.onclick=()=>{
+    const item=data.find(d=>d.id===+el.dataset.mark);if(item&&item.isInstallment&&item.monthsPaid<item.totalMonths){item.monthsPaid++;save();render();}
+  });
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────
+function syncModal(){
+  const c=document.getElementById('f-cycle').value;
+  document.getElementById('ot-f').classList.toggle('show',c==='one-time');
+  document.getElementById('start-f').classList.toggle('show',c!=='one-time');
+}
+document.getElementById('f-cycle').onchange=syncModal;
+document.getElementById('f-is-inst').onchange=()=>document.getElementById('inst-f').classList.toggle('show',document.getElementById('f-is-inst').checked);
+
+function openModal(id,preset){
+  editId=id||null;
+  const cf=document.getElementById('cred-field'),lw=document.getElementById('locked-wrap');
+  if(id){
+    const item=data.find(d=>d.id===id);
+    cf.style.display='';lw.style.display='none';
+    document.getElementById('f-cred').value=item.creditor;
+    document.getElementById('f-desc').value=item.desc;
+    document.getElementById('f-amt').value=item.amount||'';
+    document.getElementById('f-cycle').value=item.cycle;
+    document.getElementById('f-cat').value=item.cat;
+    document.getElementById('f-duedate').value=item.dueDate||'';
+    document.getElementById('f-start').value=item.startDate||'';
+    const isI=item.isInstallment||false;
+    document.getElementById('f-is-inst').checked=isI;
+    document.getElementById('inst-f').classList.toggle('show',isI);
+    if(isI){document.getElementById('f-total').value=item.totalMonths||'';document.getElementById('f-paidmo').value=item.monthsPaid||0;}
+    document.getElementById('modal-title').textContent='Edit Payable';
+  }else{
+    ['f-desc','f-amt','f-total','f-duedate','f-start'].forEach(x=>document.getElementById(x).value='');
+    document.getElementById('f-paidmo').value=0;
+    document.getElementById('f-cycle').value='15th';
+    document.getElementById('f-cat').value='utility';
+    document.getElementById('f-is-inst').checked=false;
+    document.getElementById('inst-f').classList.remove('show');
+    if(preset){
+      cf.style.display='none';lw.style.display='flex';
+      document.getElementById('locked-name').textContent=preset;
+      document.getElementById('f-cred').value=preset;
+      document.getElementById('modal-title').textContent='Add to '+preset;
+    }else{
+      cf.style.display='';lw.style.display='none';
+      document.getElementById('f-cred').value='';
+      document.getElementById('modal-title').textContent='Add Payable';
+    }
+  }
+  syncModal();
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('fab').onclick=()=>openModal();
+document.getElementById('modal-close').onclick=closeModal;
+document.getElementById('modal-cancel').onclick=closeModal;
+document.getElementById('modal').onclick=e=>{if(e.target===document.getElementById('modal'))closeModal();};
+document.getElementById('modal-save').onclick=()=>{
+  const creditor=document.getElementById('f-cred').value.trim();
+  const desc=document.getElementById('f-desc').value.trim();
+  const amount=parseFloat(document.getElementById('f-amt').value);
+  const cycle=document.getElementById('f-cycle').value;
+  const cat=document.getElementById('f-cat').value;
+  const dueDate=document.getElementById('f-duedate').value||'';
+  const startDate=document.getElementById('f-start').value||'';
+  const isInstallment=document.getElementById('f-is-inst').checked;
+  if(!creditor||!desc){alert('Please fill creditor and description.');return;}
+  if(isNaN(amount)||amount<=0){alert('Please enter a valid amount.');return;}
+  let instF={};
+  if(isInstallment){const tm=parseInt(document.getElementById('f-total').value)||0;const mp=parseInt(document.getElementById('f-paidmo').value)||0;if(tm<1){alert('Please enter total months.');return;}instF={totalMonths:tm,monthsPaid:mp};}
+  const entry={creditor,desc,amount,cycle,cat,paid:false,isInstallment,dueDate,startDate,...instF};
+  if(editId){const idx=data.findIndex(d=>d.id===editId);data[idx]={...data[idx],...entry};if(!isInstallment){delete data[idx].totalMonths;delete data[idx].monthsPaid;}}
+  else{data.push({id:nextId++,...entry});}
+  save();closeModal();render();
+};
+
+render();
+</script>
+</body>
+</html>
