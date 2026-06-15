@@ -29,8 +29,6 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
 .tab svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .content{padding-bottom:100px}
-
-/* Deadlines */
 .filter-row{display:flex;gap:7px;padding:12px 14px;overflow-x:auto;scrollbar-width:none}
 .filter-row::-webkit-scrollbar{display:none}
 .chip{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap;font-family:var(--font);transition:all .15s}
@@ -39,6 +37,8 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
 .month-block-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:.5px solid var(--border)}
 .month-block-title{font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
 .paid-pct-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--green-light);color:var(--green)}
+
+/* Section row */
 .section-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:.5px solid var(--border);cursor:pointer;user-select:none}
 .section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .section-label-txt{font-size:14px;font-weight:600;flex:1}
@@ -52,18 +52,36 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
 .section-chevron.open{transform:rotate(180deg)}
 .items-list{display:none;background:var(--surface2)}
 .items-list.open{display:block}
-.dl-item{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border-bottom:.5px solid var(--border)}
+
+/* Debtor group inside section */
+.debtor-group{border-bottom:.5px solid var(--border)}
+.debtor-group:last-child{border-bottom:none}
+.debtor-group-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface3);cursor:pointer}
+.debtor-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.debtor-name{font-size:13px;font-weight:700;flex:1}
+.debtor-total{text-align:right;flex-shrink:0}
+.debtor-total-amt{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+.debtor-cutoff-breakdown{font-size:10px;color:var(--text3);margin-top:1px}
+.debtor-chevron{font-size:12px;color:var(--text3);transition:transform .2s;flex-shrink:0}
+.debtor-chevron.open{transform:rotate(180deg)}
+.debtor-items{display:none}
+.debtor-items.open{display:block}
+
+/* Individual item row */
+.dl-item{display:flex;align-items:flex-start;gap:11px;padding:10px 14px 10px 54px;border-bottom:.5px solid var(--border)}
 .dl-item:last-child{border-bottom:none}
 .dl-check{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-top:1px;background:transparent;transition:all .15s}
 .dl-check.checked{background:var(--green);border-color:var(--green)}
 .dl-check.checked::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
 .dl-info{flex:1;min-width:0}
-.dl-name{font-size:14px;font-weight:700}
+.dl-name{font-size:13px;font-weight:600}
 .dl-name.done{text-decoration:line-through;color:var(--text3)}
-.dl-desc{font-size:12px;color:var(--text3);margin-top:2px}
+.dl-desc{font-size:11px;color:var(--text3);margin-top:2px}
 .dl-link{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--blue);margin-top:4px;cursor:pointer;border:none;background:none;font-family:var(--font);padding:0}
-.dl-amt{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0;text-align:right}
+.dl-amt{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0;text-align:right}
 .dl-amt.done{text-decoration:line-through;color:var(--text3);font-weight:400}
+.receipt-btn{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--purple);margin-top:4px;margin-left:8px;cursor:pointer;border:none;background:none;font-family:var(--font);padding:0}
+
 .grand-total-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--surface3)}
 .grand-total-lbl{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
 .grand-total-amt{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
@@ -106,7 +124,6 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
 .paid-badge-sm{background:var(--green);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 7px}
 .sched-body{display:none;margin-top:8px;border-radius:var(--r-sm);overflow:hidden;border:.5px solid var(--border)}
 .sched-body.open{display:block}
-/* Pair group */
 .pair-group{border-bottom:.5px solid var(--border)}
 .pair-group:last-child{border-bottom:none}
 .pair-header{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface3)}
@@ -206,6 +223,39 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-ghost{background:var(--surface2);color:var(--text2)}
 .empty{text-align:center;padding:48px 20px;color:var(--text3)}
+
+/* ── RECEIPT MODAL ── */
+.receipt-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
+.receipt-modal-bg.open{display:flex}
+.receipt-modal{background:var(--surface);border-radius:var(--r);width:100%;max-width:380px;overflow:hidden}
+.receipt-card{background:#fff;color:#111;padding:24px 20px;font-family:var(--font)}
+.receipt-header{text-align:center;border-bottom:1.5px dashed #ddd;padding-bottom:16px;margin-bottom:16px}
+.receipt-logo{font-size:22px;font-weight:800;letter-spacing:-.5px;color:#E05535}
+.receipt-sub{font-size:11px;color:#888;margin-top:2px}
+.receipt-date{font-size:11px;color:#888;margin-top:8px}
+.receipt-creditor{font-size:16px;font-weight:800;margin-bottom:4px;color:#111}
+.receipt-desc{font-size:12px;color:#666;margin-bottom:16px}
+.receipt-row{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:.5px solid #f0f0f0}
+.receipt-row:last-of-type{border-bottom:none}
+.receipt-row-lbl{font-size:12px;color:#666;flex:1}
+.receipt-row-val{font-size:13px;font-weight:700;color:#111;text-align:right;font-variant-numeric:tabular-nums}
+.receipt-row-val.green{color:#1D6B4A}
+.receipt-row-val.red{color:#C84B2F}
+.receipt-total-section{background:#f8f8f8;border-radius:8px;padding:12px;margin:12px 0}
+.receipt-total-lbl{font-size:11px;color:#888;margin-bottom:4px}
+.receipt-total-amt{font-size:24px;font-weight:800;color:#E05535;font-variant-numeric:tabular-nums}
+.receipt-payments-section{margin:12px 0}
+.receipt-payments-title{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.receipt-payment-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:.5px solid #f0f0f0}
+.receipt-payment-row:last-child{border-bottom:none}
+.receipt-payment-date{font-size:12px;color:#333}
+.receipt-payment-cutoff{font-size:10px;color:#888;margin-left:4px}
+.receipt-payment-amt{font-size:12px;font-weight:700;color:#1D6B4A;font-variant-numeric:tabular-nums}
+.receipt-footer{text-align:center;margin-top:16px;padding-top:12px;border-top:1.5px dashed #ddd;font-size:10px;color:#aaa}
+.receipt-actions{display:flex;gap:8px;padding:14px 16px;background:var(--surface2)}
+.receipt-action-btn{flex:1;padding:11px;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px}
+.receipt-close-btn{background:var(--surface3);color:var(--text2)}
+.receipt-share-btn{background:var(--green);color:#fff}
 </style>
 </head>
 <body>
@@ -241,7 +291,7 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
 <div class="toast" id="toast"></div>
 <input type="file" id="import-file" accept=".json" style="display:none">
 
-<!-- MODAL -->
+<!-- ADD/EDIT MODAL -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <div class="modal-head">
@@ -267,15 +317,8 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
         <option value="one-time">One-time payment</option>
       </select>
     </div>
-    <!-- one-time -->
-    <div class="cond" id="ot-f">
-      <div class="field" style="margin-bottom:0"><label>Due Date</label><input id="f-duedate" type="date"></div>
-    </div>
-    <!-- recurring -->
-    <div class="cond show" id="start-f">
-      <div class="field" style="margin-bottom:0"><label>Start Month</label><input id="f-start" type="month"></div>
-    </div>
-    <!-- custom split amounts -->
+    <div class="cond" id="ot-f"><div class="field" style="margin-bottom:0"><label>Due Date</label><input id="f-duedate" type="date"></div></div>
+    <div class="cond show" id="start-f"><div class="field" style="margin-bottom:0"><label>Start Month</label><input id="f-start" type="month"></div></div>
     <div class="cond" id="custom-f">
       <div class="field-row" style="margin-bottom:8px">
         <div class="field" style="margin-bottom:0"><label>Amount on 15th (₱)</label><input id="f-amt15" type="number" placeholder="0.00" step="0.01" inputmode="decimal"></div>
@@ -288,7 +331,6 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
         <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2);font-weight:600">Monthly total</span><span id="sp-total" style="font-weight:800;color:var(--text)">₱0.00</span></div>
       </div>
     </div>
-    <!-- split start cutoff -->
     <div class="cond" id="startcutoff-f">
       <div class="field" style="margin-bottom:0">
         <label>First payment falls on</label>
@@ -296,19 +338,14 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
           <option value="30th">30th — first payment is on the 30th</option>
           <option value="15th">15th — first payment is on the 15th</option>
         </select>
-        <div style="font-size:11px;color:var(--text3);margin-top:5px">
-          e.g. if 30th: Month 1 = [30th payment + next 15th payment]
-        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px">e.g. if 30th: Month 1 = [30th payment + next 15th payment]</div>
       </div>
     </div>
     <div class="field"><label>Category</label>
       <select id="f-cat">
-        <option value="utility">Utility</option>
-        <option value="loan">Loan / Debt</option>
-        <option value="personal">Personal</option>
-        <option value="subscription">Subscription</option>
-        <option value="installment">Installment</option>
-        <option value="other">Other</option>
+        <option value="utility">Utility</option><option value="loan">Loan / Debt</option>
+        <option value="personal">Personal</option><option value="subscription">Subscription</option>
+        <option value="installment">Installment</option><option value="other">Other</option>
       </select>
     </div>
     <div class="toggle-row">
@@ -320,13 +357,24 @@ body{max-width:430px;margin:0 auto;min-height:100vh}
         <div class="field" style="margin-bottom:0"><label>Total Months</label><input id="f-total" type="number" placeholder="e.g. 3" min="1" inputmode="numeric"></div>
         <div class="field" style="margin-bottom:0"><label>Full Months Paid</label><input id="f-paidmo" type="number" placeholder="0" min="0" inputmode="numeric"></div>
       </div>
-      <div style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5">
-        For split plans: 1 full month = both the 30th AND the following 15th payment completed.
-      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5">For split plans: 1 full month = both the 30th AND the following 15th payment completed.</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
       <button class="btn btn-primary" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT MODAL -->
+<div class="receipt-modal-bg" id="receipt-modal">
+  <div class="receipt-modal">
+    <div class="receipt-card" id="receipt-card">
+      <!-- Filled dynamically -->
+    </div>
+    <div class="receipt-actions">
+      <button class="receipt-action-btn receipt-close-btn" id="receipt-close">✕ Close</button>
+      <button class="receipt-action-btn receipt-share-btn" id="receipt-share">📸 Screenshot & Share</button>
     </div>
   </div>
 </div>
@@ -351,54 +399,28 @@ function monthlyTotal(item){if(item.cycle==='both')return +item.amount;if(item.c
 function isActive(item){if(item.paid)return false;if(item.isInstallment){const c=calcInstProgress(item);return c.fullMonthsPaid<(item.totalMonths||0);}return true;}
 function remMo(item){if(!item.isInstallment)return null;const c=calcInstProgress(item);return Math.max(0,(item.totalMonths||0)-c.fullMonthsPaid);}
 
-// ── CORE: Pair-based installment progress ──────────────────────────
-// For split plans (both/both-custom): 1 full month = pair of [cutoff1, cutoff2]
-// startCutoff='30th': pair i = [30th of month i, 15th of month i+1]
-// startCutoff='15th': pair i = [15th of month i, 30th of month i]
-// A month is "paid" only when BOTH entries in its pair are checked.
-// For single-cutoff plans: 1 month = 1 payment. Simple counter.
-
 function genSched(item){
-  const sched=[];
-  const sYM=parseYM(item.startDate||`${CY}-${PAD(CM+1)}`);
-
-  if(item.cycle==='one-time'){
-    if(item.dueDate)sched.push({date:item.dueDate,amount:+item.amount,pairIdx:0,cutoff:'one-time',pairPos:0,totalInPair:1});
-    return sched;
-  }
-
+  const sched=[];const sYM=parseYM(item.startDate||`${CY}-${PAD(CM+1)}`);
+  if(item.cycle==='one-time'){if(item.dueDate)sched.push({date:item.dueDate,amount:+item.amount,pairIdx:0,cutoff:'one-time',pairPos:0,totalInPair:1});return sched;}
   if(isSplit(item)){
     const sc=item.startCutoff||'30th';
     let count=item.isInstallment?(item.totalMonths||1):12;
-    // show a window of past + future for open-ended
     let startAbsM=sYM.year*12+sYM.month;
-    if(!item.isInstallment){
-      const bk=CY*12+CM-2;
-      startAbsM=Math.max(startAbsM,bk);
-      count=14;
-    }
-
+    if(!item.isInstallment){const bk=CY*12+CM-2;startAbsM=Math.max(startAbsM,bk);count=14;}
     for(let p=0;p<count;p++){
-      const absM=startAbsM+p;
-      const y=Math.floor(absM/12),m=absM%12;
+      const absM=startAbsM+p;const y=Math.floor(absM/12),m=absM%12;
       const last=new Date(y,m+1,0).getDate();
-
       if(sc==='30th'){
-        // pair p: [30th of month absM, 15th of month absM+1]
         sched.push({date:`${y}-${PAD(m+1)}-${PAD(Math.min(30,last))}`,amount:amt30(item),pairIdx:p,cutoff:'30th',pairPos:0,totalInPair:2});
         const absM2=absM+1;const y2=Math.floor(absM2/12),m2=absM2%12;
         sched.push({date:`${y2}-${PAD(m2+1)}-15`,amount:amt15(item),pairIdx:p,cutoff:'15th',pairPos:1,totalInPair:2});
-      } else {
-        // pair p: [15th of month absM, 30th of month absM]
+      }else{
         sched.push({date:`${y}-${PAD(m+1)}-15`,amount:amt15(item),pairIdx:p,cutoff:'15th',pairPos:0,totalInPair:2});
         sched.push({date:`${y}-${PAD(m+1)}-${PAD(Math.min(30,last))}`,amount:amt30(item),pairIdx:p,cutoff:'30th',pairPos:1,totalInPair:2});
       }
     }
-    sched.sort((a,b)=>a.date.localeCompare(b.date));
-    return sched;
+    sched.sort((a,b)=>a.date.localeCompare(b.date));return sched;
   }
-
-  // Single cutoff
   const day=item.cycle==='15th'?15:30;
   let startAbsM=sYM.year*12+sYM.month,count;
   if(item.isInstallment){count=item.totalMonths||1;}
@@ -411,75 +433,46 @@ function genSched(item){
   return sched;
 }
 
-// Calculate progress using cutoffPaid + manual monthsPaid seed
 function calcInstProgress(item){
   if(!item.isInstallment)return{fullMonthsPaid:0,partialPaid:0,totalPayments:0,paidPayments:0};
-  const sched=genSched(item);
-  const cp=item.cutoffPaid||{};
-  const totalMonths=item.totalMonths||0;
-
+  const sched=genSched(item);const cp=item.cutoffPaid||{};const totalMonths=item.totalMonths||0;
   if(!isSplit(item)){
-    // single cutoff: each payment = 1 month
-    const seedPaid=item.monthsPaid||0; // legacy / manual seed
-    let manualPaid=0;
+    const seedPaid=item.monthsPaid||0;let manualPaid=0;
     for(const s of sched){if(cp[s.date]&&cp[s.date]!=='__auto__')manualPaid++;}
     const fullMonthsPaid=Math.min(totalMonths,Math.max(seedPaid,manualPaid));
     return{fullMonthsPaid,partialPaid:0,totalPayments:totalMonths,paidPayments:fullMonthsPaid};
   }
-
-  // Split: group into pairs, a month is paid only when BOTH entries in its pair are checked
-  // Build effective paid map (seed from monthsPaid for the first N pairs)
   const seedMonths=item.monthsPaid||0;
-  // Get pairs ordered
-  const pairMap={}; // pairIdx -> [entries]
-  for(const s of sched){
-    if(!pairMap[s.pairIdx])pairMap[s.pairIdx]=[];
-    pairMap[s.pairIdx].push(s);
-  }
+  const pairMap={};for(const s of sched){if(!pairMap[s.pairIdx])pairMap[s.pairIdx]=[];pairMap[s.pairIdx].push(s);}
   const pairIdxs=Object.keys(pairMap).map(Number).sort((a,b)=>a-b);
-
   const effectivePaid={...cp};
-  // Auto-seed first N pairs from monthsPaid
-  for(let i=0;i<Math.min(seedMonths,pairIdxs.length);i++){
-    const pair=pairMap[pairIdxs[i]];
-    for(const s of pair)if(!effectivePaid[s.date])effectivePaid[s.date]='__auto__';
-  }
-
+  for(let i=0;i<Math.min(seedMonths,pairIdxs.length);i++){const pair=pairMap[pairIdxs[i]];for(const s of pair)if(!effectivePaid[s.date])effectivePaid[s.date]='__auto__';}
   let fullMonthsPaid=0,partialPaid=0,paidPayments=0;
   for(const pi of pairIdxs){
     if(pi>=totalMonths)break;
-    const pair=pairMap[pi];
-    const paidInPair=pair.filter(s=>!!effectivePaid[s.date]).length;
+    const pair=pairMap[pi];const paidInPair=pair.filter(s=>!!effectivePaid[s.date]).length;
     paidPayments+=paidInPair;
-    if(paidInPair===pair.length)fullMonthsPaid++;
-    else if(paidInPair>0)partialPaid++;
+    if(paidInPair===pair.length)fullMonthsPaid++;else if(paidInPair>0)partialPaid++;
   }
   const totalPayments=Math.min(pairIdxs.length,totalMonths)*2;
   return{fullMonthsPaid,partialPaid,totalPayments,paidPayments,effectivePaid};
 }
 
 function getEffectivePaid(item){
-  const sched=genSched(item);
-  const cp=item.cutoffPaid||{};
+  const sched=genSched(item);const cp=item.cutoffPaid||{};
   if(!item.isInstallment)return cp;
-
   const seedMonths=item.monthsPaid||0;
   if(!isSplit(item)){
-    // seed first N entries
-    const ep={...cp};
-    let seeded=0;
+    const ep={...cp};let seeded=0;
     for(const s of sched){if(seeded>=seedMonths)break;if(!ep[s.date])ep[s.date]='__auto__';seeded++;}
     return ep;
   }
-  // split: use calcInstProgress which seeds pairs
-  const prog=calcInstProgress(item);
-  return prog.effectivePaid||cp;
+  const prog=calcInstProgress(item);return prog.effectivePaid||cp;
 }
 
 function instPct(item){
   if(!item.isInstallment||!item.totalMonths)return 0;
-  const c=calcInstProgress(item);
-  return Math.min(100,Math.round(c.fullMonthsPaid/item.totalMonths*100));
+  const c=calcInstProgress(item);return Math.min(100,Math.round(c.fullMonthsPaid/item.totalMonths*100));
 }
 
 // ── Data ──────────────────────────────────────────────────────────────
@@ -501,6 +494,7 @@ catch(e){data=JSON.parse(JSON.stringify(SAMPLE));nextId=200;}
 let activeTab='cycles',activeFilter='current',editId=null;
 const openSched=new Set();
 const openSections=new Set(['15th','30th','one-time']);
+const openDebtors=new Set();
 
 function save(){try{localStorage.setItem('bayadko_data',JSON.stringify({data,nextId}))}catch(e){}}
 document.getElementById('hdr-month').textContent=MS[CM]+' '+CY;
@@ -509,14 +503,11 @@ const AVCOLS=['#C84B2F','#1A5C9E','#1D6B4A','#5C3A9E','#9B6000','#8B2050','#2E6B
 function avCol(name){let h=0;for(const c of name)h=(h*31+c.charCodeAt(0))%AVCOLS.length;return AVCOLS[h];}
 function initials(s){return s.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();}
 
-// ── Schedule rendering (pair-grouped for split) ───────────────────
+// ── Schedule body ────────────────────────────────────────────────────
 function renderSchedBody(item){
-  const sched=genSched(item);
-  if(!sched.length)return'';
+  const sched=genSched(item);if(!sched.length)return'';
   const ep=getEffectivePaid(item);
-
   if(!isSplit(item)){
-    // Simple list
     return sched.map(s=>{
       const isPaid=!!ep[s.date];const isAuto=ep[s.date]==='__auto__';
       const isPast=!isPaid&&s.date<TODAY;const isTod=!isPaid&&s.date===TODAY;
@@ -528,36 +519,20 @@ function renderSchedBody(item){
       return`<div class="sched-row ${isPaid?'sc-paid':''}">
         <div class="sc-check ${isPaid?'checked':''}" data-sc="${item.id}" data-sc-date="${s.date}"></div>
         <span class="sched-dot" style="background:${isPaid?'var(--green)':isPast?'var(--text3)':dc}"></span>
-        <div style="flex:1;min-width:0">
-          <div class="sched-date ${isPaid?'done':''}">${lbl}${isTod?` <span class="today-tag">TODAY</span>`:''}</div>
-          ${pNote}
-        </div>
-        <div class="sched-right">
-          <div class="sched-amt ${isPaid?'done':''}" style="${isPaid?'':'color:'+dc}">${fmt(s.amount)}</div>
-          <div class="sched-status">${isPaid?'paid':isPast?'past due':isTod?'due today':'upcoming'}</div>
-        </div>
+        <div style="flex:1;min-width:0"><div class="sched-date ${isPaid?'done':''}">${lbl}${isTod?` <span class="today-tag">TODAY</span>`:''}</div>${pNote}</div>
+        <div class="sched-right"><div class="sched-amt ${isPaid?'done':''}" style="${isPaid?'':'color:'+dc}">${fmt(s.amount)}</div><div class="sched-status">${isPaid?'paid':isPast?'past due':isTod?'due today':'upcoming'}</div></div>
       </div>`;
     }).join('');
   }
-
-  // Group into pairs
-  const pairMap={};
-  for(const s of sched){if(!pairMap[s.pairIdx])pairMap[s.pairIdx]=[];pairMap[s.pairIdx].push(s);}
+  const pairMap={};for(const s of sched){if(!pairMap[s.pairIdx])pairMap[s.pairIdx]=[];pairMap[s.pairIdx].push(s);}
   const pairIdxs=Object.keys(pairMap).map(Number).sort((a,b)=>a-b);
   const totalMonths=item.totalMonths||pairIdxs.length;
-
   return pairIdxs.map(pi=>{
-    const pair=pairMap[pi];
-    const paidInPair=pair.filter(s=>!!ep[s.date]).length;
-    const isComplete=paidInPair===pair.length;
-    const isPartial=paidInPair>0&&!isComplete;
-    const monthNum=pi+1;
+    if(item.isInstallment&&pi>=totalMonths)return'';
+    const pair=pairMap[pi];const paidInPair=pair.filter(s=>!!ep[s.date]).length;
+    const isComplete=paidInPair===pair.length;const isPartial=paidInPair>0&&!isComplete;
     const statusCls=isComplete?'complete':isPartial?'partial':'pending';
     const statusTxt=isComplete?'Month paid':isPartial?`${paidInPair}/${pair.length} paid`:'Pending';
-
-    // Only show pairs within totalMonths for installments
-    if(item.isInstallment&&pi>=totalMonths)return'';
-
     const rows=pair.map(s=>{
       const isPaid=!!ep[s.date];const isAuto=ep[s.date]==='__auto__';
       const isPast=!isPaid&&s.date<TODAY;const isTod=!isPaid&&s.date===TODAY;
@@ -569,26 +544,84 @@ function renderSchedBody(item){
       return`<div class="sched-row ${isPaid?'sc-paid':''}">
         <div class="sc-check ${isPaid?'checked':''}" data-sc="${item.id}" data-sc-date="${s.date}"></div>
         <span class="sched-dot" style="background:${isPaid?'var(--green)':isPast?'var(--text3)':dc}"></span>
-        <div style="flex:1;min-width:0">
-          <div class="sched-date ${isPaid?'done':''}">${lbl}${isTod?` <span class="today-tag">TODAY</span>`:''}</div>
-          ${pNote}
-        </div>
-        <div class="sched-right">
-          <div class="sched-amt ${isPaid?'done':''}" style="${isPaid?'':'color:'+dc}">${fmt(s.amount)}</div>
-          <div class="sched-status">${isPaid?'paid':isPast?'past due':isTod?'due today':'upcoming'}</div>
-        </div>
+        <div style="flex:1;min-width:0"><div class="sched-date ${isPaid?'done':''}">${lbl}${isTod?` <span class="today-tag">TODAY</span>`:''}</div>${pNote}</div>
+        <div class="sched-right"><div class="sched-amt ${isPaid?'done':''}" style="${isPaid?'':'color:'+dc}">${fmt(s.amount)}</div><div class="sched-status">${isPaid?'paid':isPast?'past due':isTod?'due today':'upcoming'}</div></div>
       </div>`;
     }).join('');
-
     return`<div class="pair-group">
-      <div class="pair-header">
-        <span class="pair-label">Month ${monthNum}${item.isInstallment?' of '+totalMonths:''}</span>
-        <span class="pair-status ${statusCls}">${statusTxt}</span>
-        <span class="pair-progress">${paidInPair}/${pair.length} payments</span>
-      </div>
+      <div class="pair-header"><span class="pair-label">Month ${pi+1}${item.isInstallment?' of '+totalMonths:''}</span><span class="pair-status ${statusCls}">${statusTxt}</span><span class="pair-progress">${paidInPair}/${pair.length} payments</span></div>
       ${rows}
     </div>`;
   }).join('');
+}
+
+// ── RECEIPT BUILDER ───────────────────────────────────────────────────
+function openReceipt(itemId){
+  const item=data.find(d=>d.id===itemId);if(!item)return;
+  const prog=item.isInstallment?calcInstProgress(item):null;
+  const ep=getEffectivePaid(item);
+  const sched=genSched(item);
+  const now=new Date();
+  const dateStr=MS[now.getMonth()]+' '+now.getDate()+', '+now.getFullYear();
+  const timeStr=now.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit',hour12:true});
+
+  // Paid entries
+  const paidEntries=sched.filter(s=>ep[s.date]&&ep[s.date]!=='__auto__').sort((a,b)=>a.date.localeCompare(b.date));
+  const autoPaidEntries=sched.filter(s=>ep[s.date]==='__auto__');
+  const totalPaidAmt=sched.filter(s=>ep[s.date]).reduce((sum,s)=>sum+s.amount,0);
+  const remainingAmt=item.isInstallment&&prog?Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid)*monthlyTotal(item):0;
+
+  // Build paid payments list (manual only for receipt)
+  let paymentsHTML='';
+  if(paidEntries.length>0){
+    paymentsHTML=`<div class="receipt-payments-section">
+      <div class="receipt-payments-title">Payment History</div>
+      ${paidEntries.map(s=>{
+        const[,sm,sd]=s.date.split('-').map(Number);
+        return`<div class="receipt-payment-row">
+          <div><span class="receipt-payment-date">${MS[sm-1]} ${sd}</span><span class="receipt-payment-cutoff">(${s.cutoff})</span></div>
+          <div class="receipt-payment-amt">${fmt(s.amount)}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  let instDetails='';
+  if(item.isInstallment&&prog){
+    const rem=Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid);
+    instDetails=`
+      <div class="receipt-row"><span class="receipt-row-lbl">Total Months</span><span class="receipt-row-val">${item.totalMonths} months</span></div>
+      <div class="receipt-row"><span class="receipt-row-lbl">Full Months Paid</span><span class="receipt-row-val green">${prog.fullMonthsPaid} months</span></div>
+      ${isSplit(item)?`<div class="receipt-row"><span class="receipt-row-lbl">Payments Made</span><span class="receipt-row-val green">${prog.paidPayments} / ${prog.totalPayments}</span></div>`:''}
+      <div class="receipt-row"><span class="receipt-row-lbl">Months Remaining</span><span class="receipt-row-val red">${rem} months</span></div>
+      <div class="receipt-row"><span class="receipt-row-lbl">Balance to Pay</span><span class="receipt-row-val red">${fmt(remainingAmt)}</span></div>`;
+  }
+
+  const splitBreakdown=isSplit(item)?`
+    <div class="receipt-row"><span class="receipt-row-lbl">Due on 15th</span><span class="receipt-row-val">${fmt(amt15(item))}</span></div>
+    <div class="receipt-row"><span class="receipt-row-lbl">Due on 30th</span><span class="receipt-row-val">${fmt(amt30(item))}</span></div>`:'';
+
+  document.getElementById('receipt-card').innerHTML=`
+    <div class="receipt-header">
+      <div class="receipt-logo">Bayad Ko</div>
+      <div class="receipt-sub">Payment Statement</div>
+      <div class="receipt-date">Generated: ${dateStr} at ${timeStr}</div>
+    </div>
+    <div class="receipt-creditor">${item.creditor}</div>
+    <div class="receipt-desc">${item.desc}</div>
+    <div class="receipt-row"><span class="receipt-row-lbl">Monthly Amount</span><span class="receipt-row-val">${fmt(monthlyTotal(item))}</span></div>
+    <div class="receipt-row"><span class="receipt-row-lbl">Payment Cycle</span><span class="receipt-row-val">${item.cycle==='both'?'15th & 30th (equal)':item.cycle==='both-custom'?'15th & 30th (custom)':item.cycle==='one-time'?'One-time':'Every '+item.cycle}</span></div>
+    ${splitBreakdown}
+    ${item.startDate?`<div class="receipt-row"><span class="receipt-row-lbl">Started</span><span class="receipt-row-val">${fmtMonth(item.startDate)}</span></div>`:''}
+    ${instDetails}
+    ${item.isInstallment&&prog?`<div class="receipt-total-section">
+      <div class="receipt-total-lbl">Total Paid to Date</div>
+      <div class="receipt-total-amt">${fmt(totalPaidAmt)}</div>
+    </div>`:''}
+    ${paymentsHTML}
+    <div class="receipt-footer">Bayad Ko · Bills & Payables Tracker<br>Screenshot this to share as payment confirmation</div>`;
+
+  document.getElementById('receipt-modal').classList.add('open');
 }
 
 // ── CYCLES TAB ────────────────────────────────────────────────────────
@@ -611,37 +644,67 @@ function renderCycles(){
   const items30=filtered.filter(i=>i.cycle==='30th'||isSplit(i));
   const itemsOT=filtered.filter(i=>i.cycle==='one-time').sort((a,b)=>(a.dueDate||'').localeCompare(b.dueDate||''));
 
-  function buildSection(key,label,dotColor,amtColor,items,getAmt){
+  function buildSection(sectionKey,label,dotColor,amtColor,items,getAmt){
     if(!items.length)return'';
     const total=items.filter(isActive).reduce((s,i)=>s+getAmt(i),0);
     const pc=items.filter(i=>!isActive(i)).length;
     const ap=items.length>0&&items.every(i=>!isActive(i));
-    const isOpen=openSections.has(key);
+    const isOpen=openSections.has(sectionKey);
 
-    const rows=items.map(item=>{
-      const done=!isActive(item);
-      const prog=item.isInstallment?calcInstProgress(item):null;
-      let descExtra='';
-      if(isSplit(item)&&item.isInstallment&&prog){
-        descExtra=` · ${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${item.totalMonths} mo`;
-      } else if(item.isInstallment&&prog){
-        descExtra=` · ${prog.fullMonthsPaid}/${item.totalMonths} mo paid`;
-      }
-      return`<div class="dl-item">
-        <div class="dl-check ${done?'checked':''}" data-dl-toggle="${item.id}"></div>
-        <div class="dl-info">
-          <div class="dl-name ${done?'done':''}">${item.creditor}</div>
-          <div class="dl-desc">${item.desc}${descExtra}${item.cycle==='one-time'&&item.dueDate?` · ${fmtDate(item.dueDate)}`:''}</div>
-          <button class="dl-link" data-goto="${item.creditor}">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            View in Hall of Fame
-          </button>
+    // Group by creditor
+    const grouped=groupBy(items,'creditor');
+    const debtorBlocks=Object.keys(grouped).map(creditor=>{
+      const citems=grouped[creditor];
+      const cTotal=citems.filter(isActive).reduce((s,i)=>s+getAmt(i),0);
+      const c15=citems.filter(isActive).reduce((s,i)=>s+amt15(i),0);
+      const c30=citems.filter(isActive).reduce((s,i)=>s+amt30(i),0);
+      const col=avCol(creditor);
+      const dKey=`${sectionKey}-${creditor}`;
+      const isDOpen=openDebtors.has(dKey);
+
+      let breakdownStr='';
+      if(c15>0&&c30>0)breakdownStr=`15th: ${fmt(c15)} · 30th: ${fmt(c30)}`;
+      else if(c15>0)breakdownStr=`Due 15th`;
+      else if(c30>0)breakdownStr=`Due 30th`;
+
+      const rows=citems.map(item=>{
+        const done=!isActive(item);
+        const prog=item.isInstallment?calcInstProgress(item):null;
+        let descExtra='';
+        if(isSplit(item)&&item.isInstallment&&prog)descExtra=` · ${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${item.totalMonths} mo`;
+        else if(item.isInstallment&&prog)descExtra=` · ${prog.fullMonthsPaid}/${item.totalMonths} mo paid`;
+        return`<div class="dl-item">
+          <div class="dl-check ${done?'checked':''}" data-dl-toggle="${item.id}"></div>
+          <div class="dl-info">
+            <div class="dl-name ${done?'done':''}">${item.desc}</div>
+            <div class="dl-desc">${item.desc}${descExtra}${item.cycle==='one-time'&&item.dueDate?` · ${fmtDate(item.dueDate)}`:''}</div>
+            <div style="display:flex;align-items:center;gap:0">
+              <button class="dl-link" data-goto="${item.creditor}">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Hall of Fame
+              </button>
+              ${item.isInstallment?`<button class="receipt-btn" data-receipt="${item.id}">🧾 Receipt</button>`:''}
+            </div>
+          </div>
+          <div class="dl-amt ${done?'done':''}" style="${done?'':'color:'+amtColor}">${fmt(getAmt(item))}</div>
+        </div>`;
+      }).join('');
+
+      return`<div class="debtor-group">
+        <div class="debtor-group-header" data-debtor="${dKey}">
+          <div class="debtor-av" style="background:${col}">${initials(creditor)}</div>
+          <div class="debtor-name">${creditor}</div>
+          <div class="debtor-total">
+            <div class="debtor-total-amt" style="color:${amtColor}">${fmt(cTotal)}</div>
+            ${breakdownStr?`<div class="debtor-cutoff-breakdown">${breakdownStr}</div>`:''}
+          </div>
+          <span class="debtor-chevron ${isDOpen?'open':''}">▾</span>
         </div>
-        <div class="dl-amt ${done?'done':''}" style="${done?'':'color:'+amtColor}">${fmt(getAmt(item))}</div>
+        <div class="debtor-items ${isDOpen?'open':''}" id="debtor-${dKey}">${rows}</div>
       </div>`;
     }).join('');
 
-    return`<div class="section-row" data-section="${key}">
+    return`<div class="section-row" data-section="${sectionKey}">
       <span class="section-dot" style="background:${dotColor}"></span>
       <span class="section-label-txt">${label}</span>
       <div class="sec-check ${ap?'all-paid':''}"></div>
@@ -651,21 +714,20 @@ function renderCycles(){
       </div>
       <span class="section-chevron ${isOpen?'open':''}">▾</span>
     </div>
-    <div class="items-list ${isOpen?'open':''}" id="sec-${key}">${rows}</div>`;
+    <div class="items-list ${isOpen?'open':''}" id="sec-${sectionKey}">${debtorBlocks}</div>`;
   }
 
   const allActive=filtered.filter(isActive);
   const grandTotal=allActive.reduce((s,i)=>s+monthlyTotal(i),0);
   const grandPaid=filtered.filter(i=>!isActive(i)).reduce((s,i)=>s+monthlyTotal(i),0);
-  const grandAll=grandTotal+grandPaid;
-  const pct=grandAll>0?Math.round(grandPaid/grandAll*100):0;
-  const showMonth=activeFilter==='current'||activeFilter==='all';
+  const pct=grandTotal+grandPaid>0?Math.round(grandPaid/(grandTotal+grandPaid)*100):0;
   const show15=activeFilter!=='one-time'&&activeFilter!=='30th';
   const show30=activeFilter!=='one-time'&&activeFilter!=='15th';
   const showOT=activeFilter!=='15th'&&activeFilter!=='30th';
 
-  const block=`<div class="month-block">
-    ${showMonth?`<div class="month-block-header"><div class="month-block-title">${MF[CM]} ${CY}</div><div class="paid-pct-badge">${pct}% paid</div></div>`:''}
+  return`<div class="filter-row">${chips}</div>
+  <div class="month-block">
+    ${activeFilter==='current'||activeFilter==='all'?`<div class="month-block-header"><div class="month-block-title">${MF[CM]} ${CY}</div><div class="paid-pct-badge">${pct}% paid</div></div>`:''}
     ${show15?buildSection('15th','Due on the 15th','var(--blue)','var(--blue)',items15,i=>isSplit(i)?amt15(i):+i.amount):''}
     ${show30?buildSection('30th','Due on the 30th','var(--accent)','var(--accent)',items30,i=>isSplit(i)?amt30(i):+i.amount):''}
     ${showOT?buildSection('one-time','One-time','var(--amber)','var(--amber)',itemsOT,i=>+i.amount):''}
@@ -674,86 +736,53 @@ function renderCycles(){
       <div class="grand-total-amt">${fmt(grandTotal)}</div>
     </div>
   </div>`;
-
-  return`<div class="filter-row">${chips}</div>${block}`;
 }
 
 // ── CREDITORS TAB ─────────────────────────────────────────────────────
 function renderCreditors(){
-  const grouped=groupBy(data,'creditor');
-  const keys=Object.keys(grouped);
-  if(!keys.length)return`<div class="empty">No payables yet.<br>Tap + to add one.</div>`;
-
+  const grouped=groupBy(data,'creditor');const keys=Object.keys(grouped);
+  if(!keys.length)return`<div class="empty">No payables yet. Tap + to add one.</div>`;
   return keys.map(creditor=>{
-    const items=grouped[creditor];
-    const col=avCol(creditor);
+    const items=grouped[creditor];const col=avCol(creditor);
     const cycles=[...new Set(items.map(i=>i.cycle))];
     const cycleDots=cycles.filter(c=>c!=='one-time').map(c=>{
       if(c==='both'||c==='both-custom')return`<span class="cdot" style="background:var(--blue)"></span>15th <span class="cdot" style="background:var(--accent)"></span>30th`;
       return`<span class="cdot" style="background:${c==='15th'?'var(--blue)':'var(--accent)'}"></span>${c}`;
     }).join(' ');
-
     const rows=items.map(item=>{
-      const done=!isActive(item);
-      const split=isSplit(item);
-      const prog=item.isInstallment?calcInstProgress(item):null;
-      const pct=instPct(item);
-      const overdue=!done&&item.cycle==='one-time'&&item.dueDate&&item.dueDate<TODAY;
+      const done=!isActive(item);const split=isSplit(item);const prog=item.isInstallment?calcInstProgress(item):null;
+      const pct=instPct(item);const overdue=!done&&item.cycle==='one-time'&&item.dueDate&&item.dueDate<TODAY;
       const cycleLabel=item.cycle==='both'?'15TH & 30TH (EQUAL)':item.cycle==='both-custom'?'15TH & 30TH (CUSTOM)':item.cycle==='one-time'?'ONE-TIME':'DUE '+item.cycle.toUpperCase();
       const bCls=done?'b-paid':overdue?'b-over':split?'b-split':item.cycle==='15th'?'b-15':'b-30';
-
-      // Split pills
       const splitPills=split&&!done?`<div style="display:flex;gap:6px;margin-top:5px">
-        <div style="flex:1;background:var(--blue-light);border-radius:7px;padding:5px 8px;text-align:center">
-          <div style="font-size:10px;color:var(--blue);font-weight:600">15th</div>
-          <div style="font-size:13px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums">${fmt(amt15(item))}</div>
-        </div>
-        <div style="flex:1;background:var(--accent-light);border-radius:7px;padding:5px 8px;text-align:center">
-          <div style="font-size:10px;color:var(--accent);font-weight:600">30th</div>
-          <div style="font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums">${fmt(amt30(item))}</div>
-        </div>
+        <div style="flex:1;background:var(--blue-light);border-radius:7px;padding:5px 8px;text-align:center"><div style="font-size:10px;color:var(--blue);font-weight:600">15th</div><div style="font-size:13px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums">${fmt(amt15(item))}</div></div>
+        <div style="flex:1;background:var(--accent-light);border-radius:7px;padding:5px 8px;text-align:center"><div style="font-size:10px;color:var(--accent);font-weight:600">30th</div><div style="font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums">${fmt(amt30(item))}</div></div>
       </div>`:'';
-
-      // Progress bar for installments
       let instSection='';
       if(item.isInstallment&&prog){
-        const rem=Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid);
-        const isDone=rem===0;
-        // For split: show payments out of total payments, and months
-        const pillTxt=isDone?'Fully paid':split
-          ?`${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${item.totalMonths} mo`
-          :`${prog.fullMonthsPaid}/${item.totalMonths} mo paid`;
-        instSection=`<div class="inst-wrap">
-          <div class="inst-bar"><div class="inst-fill ${isDone?'done':''}" style="width:${pct}%"></div></div>
-          <span class="inst-pill ${isDone?'done':''}">${pillTxt}</span>
-        </div>`;
+        const rem=Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid);const isDone=rem===0;
+        const pillTxt=isDone?'Fully paid':split?`${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${item.totalMonths} mo`:`${prog.fullMonthsPaid}/${item.totalMonths} mo paid`;
+        instSection=`<div class="inst-wrap"><div class="inst-bar"><div class="inst-fill ${isDone?'done':''}" style="width:${pct}%"></div></div><span class="inst-pill ${isDone?'done':''}">${pillTxt}</span></div>`;
       }
-
-      // Payment schedule
-      const sched=genSched(item);
-      const ep=getEffectivePaid(item);
-      const paidCnt=Object.keys(ep).length;
-      const totalSched=sched.length;
-      const isOpen=openSched.has(item.id);
+      const sched=genSched(item);const ep=getEffectivePaid(item);
+      const paidCnt=Object.keys(ep).length;const isOpen=openSched.has(item.id);
       const schedBody=renderSchedBody(item);
       const schedSec=schedBody?`<button class="sched-btn ${isOpen?'open':''}" data-sched="${item.id}">
         <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        ${isOpen?'Hide':'Show'} payment dates (${totalSched})${paidCnt?` <span class="paid-badge-sm">${paidCnt} paid</span>`:''}
+        ${isOpen?'Hide':'Show'} payment dates (${sched.length})${paidCnt?` <span class="paid-badge-sm">${paidCnt} paid</span>`:''}
       </button>
       <div class="sched-body ${isOpen?'open':''}" id="sched-${item.id}" style="max-height:400px;overflow-y:auto">${schedBody}</div>`:'';
-
       return`<div class="bill-row">
         <div class="bill-check ${done?'paid':''}" data-toggle="${item.id}"></div>
         <div class="bill-top">
           <div class="bill-name" style="${done?'text-decoration:line-through;color:var(--text3)':''}">${item.desc}</div>
           <div style="display:flex;align-items:flex-start;gap:4px;flex-shrink:0">
             <div style="text-align:right">
-              <div style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;${done?'text-decoration:line-through;color:var(--text3)':''}">
-                ${fmt(monthlyTotal(item))}${item.isInstallment?`<span style="font-size:10px;font-weight:400;color:var(--text3)">/mo</span>`:''}
-              </div>
+              <div style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;${done?'text-decoration:line-through;color:var(--text3)':''}">${fmt(monthlyTotal(item))}${item.isInstallment?`<span style="font-size:10px;font-weight:400;color:var(--text3)">/mo</span>`:''}</div>
               ${split&&!done?`<div style="font-size:10px;color:var(--text3)">total/mo</div>`:''}
             </div>
             <div class="bill-actions">
+              <button class="icon-btn" data-receipt-hall="${item.id}" title="Receipt">🧾</button>
               <button class="icon-btn" data-edit="${item.id}"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
               <button class="icon-btn" data-del="${item.id}" style="color:var(--accent)"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg></button>
             </div>
@@ -761,28 +790,19 @@ function renderCreditors(){
         </div>
         <div class="bill-meta">
           <span class="badge ${bCls}">${cycleLabel}</span>
-          ${item.cycle==='one-time'&&item.dueDate?`<span class="bill-since">${fmtDate(item.dueDate)}</span>`:
-            item.startDate&&item.cycle!=='one-time'?`<span class="bill-since">· since ${fmtMonth(item.startDate)}${split&&item.startCutoff?' ('+item.startCutoff+' first)':''}</span>`:''}
+          ${item.cycle==='one-time'&&item.dueDate?`<span class="bill-since">${fmtDate(item.dueDate)}</span>`:item.startDate&&item.cycle!=='one-time'?`<span class="bill-since">· since ${fmtMonth(item.startDate)}${split&&item.startCutoff?' ('+item.startCutoff+' first)':''}</span>`:''}
         </div>
-        ${splitPills}
-        ${instSection}
-        ${schedSec}
+        ${splitPills}${instSection}${schedSec}
       </div>`;
     }).join('');
-
     const active=items.filter(isActive);
-    const t15=active.reduce((s,i)=>s+amt15(i),0);
-    const t30=active.reduce((s,i)=>s+amt30(i),0);
+    const t15=active.reduce((s,i)=>s+amt15(i),0);const t30=active.reduce((s,i)=>s+amt30(i),0);
     const tOT=active.filter(i=>i.cycle==='one-time').reduce((s,i)=>s+(+i.amount),0);
     const tAll=active.reduce((s,i)=>s+monthlyTotal(i),0);
-
     return`<div class="creditor-card">
       <div class="creditor-header">
         <div class="av" style="background:${col}">${initials(creditor)}</div>
-        <div style="flex:1;min-width:0">
-          <div class="cred-name">${creditor}</div>
-          <div class="cred-cycles">${cycleDots||cycles.join(', ')}</div>
-        </div>
+        <div style="flex:1;min-width:0"><div class="cred-name">${creditor}</div><div class="cred-cycles">${cycleDots||cycles.join(', ')}</div></div>
         <button class="add-item-btn" data-add-to="${creditor}">+</button>
       </div>
       ${rows}
@@ -790,10 +810,7 @@ function renderCreditors(){
         ${t15>0?`<div class="sub-row"><span class="sub-lbl"><span class="cdot" style="background:var(--blue)"></span>Due every 15th</span><span class="sub-amt">${fmt(t15)}</span></div>`:''}
         ${t30>0?`<div class="sub-row"><span class="sub-lbl"><span class="cdot" style="background:var(--accent)"></span>Due every 30th</span><span class="sub-amt">${fmt(t30)}</span></div>`:''}
         ${tOT>0?`<div class="sub-row"><span class="sub-lbl"><span class="cdot" style="background:var(--amber)"></span>One-time</span><span class="sub-amt">${fmt(tOT)}</span></div>`:''}
-        <div class="total-row">
-          <span class="total-lbl">Total monthly</span>
-          <span class="total-amt ${tAll===0?'clear':''}">${fmt(tAll)}</span>
-        </div>
+        <div class="total-row"><span class="total-lbl">Total monthly</span><span class="total-amt ${tAll===0?'clear':''}">${fmt(tAll)}</span></div>
       </div>
     </div>`;
   }).join('');
@@ -803,49 +820,30 @@ function renderCreditors(){
 function renderInstallments(){
   const items=data.filter(i=>i.isInstallment);
   if(!items.length)return`<div class="empty">No installment plans yet.</div>`;
-  const active=items.filter(isActive);
-  const done=items.filter(i=>!isActive(i));
+  const active=items.filter(isActive);const done=items.filter(i=>!isActive(i));
   const tMo=active.reduce((s,i)=>s+monthlyTotal(i),0);
   const tRem=active.reduce((s,i)=>s+Math.max(0,(i.totalMonths||0)-calcInstProgress(i).fullMonthsPaid)*monthlyTotal(i),0);
-
   function card(item){
-    const prog=calcInstProgress(item);
-    const rem=Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid);
-    const total=item.totalMonths||0;
-    const pct=instPct(item);const isDone=rem===0;const col=avCol(item.creditor);
-    const split=isSplit(item);
-    const sYM=parseYM(item.startDate);
+    const prog=calcInstProgress(item);const rem=Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid);
+    const total=item.totalMonths||0;const pct=instPct(item);const isDone=rem===0;const col=avCol(item.creditor);
+    const split=isSplit(item);const sYM=parseYM(item.startDate);
     let endStr='';
     if(sYM&&rem>0){const fY=sYM.year+Math.floor((sYM.month+prog.fullMonthsPaid+rem-1)/12);const fM=((sYM.month+prog.fullMonthsPaid+rem-1)%12+12)%12;endStr=MS[fM]+' '+fY;}
-
     let dots='';
-    for(let m=0;m<total;m++){
-      let cls='mo-fut';
-      if(m<prog.fullMonthsPaid)cls='mo-paid';
-      else if(m===prog.fullMonthsPaid&&!isDone)cls='mo-cur';
-      dots+=`<div class="mo ${cls}" title="Month ${m+1}">${m+1}</div>`;
-    }
-
+    for(let m=0;m<total;m++){let cls='mo-fut';if(m<prog.fullMonthsPaid)cls='mo-paid';else if(m===prog.fullMonthsPaid&&!isDone)cls='mo-cur';dots+=`<div class="mo ${cls}" title="Month ${m+1}">${m+1}</div>`;}
     const progressDetail=split
-      ?`<div style="font-size:11px;color:var(--text3);margin-top:3px">${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${total} full months paid${prog.partialPaid>0?` · 1 month in progress`:''}</div>`
+      ?`<div style="font-size:11px;color:var(--text3);margin-top:3px">${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${total} full months${prog.partialPaid>0?' · 1 in progress':''}</div>`
       :`<div style="font-size:11px;color:var(--text3);margin-top:3px">${prog.fullMonthsPaid} of ${total} months paid</div>`;
-
     return`<div class="inst-card">
       <div class="inst-card-top">
         <div style="display:flex;align-items:center;gap:9px">
           <div class="av" style="width:36px;height:36px;font-size:11px;background:${col}">${initials(item.creditor)}</div>
           <div><div class="inst-card-name">${item.desc}</div><div class="inst-card-cred">${item.creditor}${item.startDate?' · '+fmtMonth(item.startDate):''}${split&&item.startCutoff?' · '+item.startCutoff+' first':''}</div></div>
         </div>
-        <div style="text-align:right">
-          <div style="font-size:15px;font-weight:800;color:${isDone?'var(--green)':'var(--accent)'}">${isDone?'Complete':rem+' mo left'}</div>
-          ${endStr&&!isDone?`<div style="font-size:10px;color:var(--text3)">ends ${endStr}</div>`:''}
-        </div>
+        <div style="text-align:right"><div style="font-size:15px;font-weight:800;color:${isDone?'var(--green)':'var(--accent)'}">${isDone?'Complete':rem+' mo left'}</div>${endStr&&!isDone?`<div style="font-size:10px;color:var(--text3)">ends ${endStr}</div>`:''}</div>
       </div>
       <div style="margin-bottom:6px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px">
-          <span style="color:var(--text3)">${pct}% complete</span>
-          <span style="font-weight:800;color:${isDone?'var(--green)':'var(--purple)'}">${pct}%</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px"><span style="color:var(--text3)">${pct}% complete</span><span style="font-weight:800;color:${isDone?'var(--green)':'var(--purple)'}">${pct}%</span></div>
         <div class="prog-bar" style="height:5px"><div class="prog-fill" style="width:${pct}%;background:${isDone?'var(--green)':'var(--purple)'}"></div></div>
         ${progressDetail}
       </div>
@@ -856,12 +854,12 @@ function renderInstallments(){
         <div class="istat"><div class="istat-val" style="color:${isDone?'var(--green)':'var(--accent)'}">${fmt(rem*monthlyTotal(item))}</div><div class="istat-lbl">${isDone?'done':'still owed'}</div></div>
       </div>
       <div style="display:flex;gap:6px;margin-top:10px;justify-content:flex-end">
+        <button class="btn btn-ghost" style="flex:none;padding:6px 12px;font-size:12px;background:var(--purple-light);color:var(--purple)" data-receipt="${item.id}">🧾 Receipt</button>
         <button class="btn btn-ghost" style="flex:none;padding:6px 12px;font-size:12px" data-edit="${item.id}">✏ Edit</button>
         <button class="btn btn-ghost" style="flex:none;padding:6px 12px;font-size:12px;color:var(--accent)" data-del="${item.id}">🗑</button>
       </div>
     </div>`;
   }
-
   return`<div class="inst-overview">
     <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Active Plans — ${active.length}</div>
     <div style="display:flex;gap:16px">
@@ -876,29 +874,38 @@ function renderInstallments(){
 
 // ── SUMMARY TAB ───────────────────────────────────────────────────────
 function renderSummary(){
-  const active=data.filter(isActive);
-  const owed=active.reduce((s,i)=>s+monthlyTotal(i),0);
-  const doneItems=data.filter(i=>!isActive(i));
-  const paid=doneItems.reduce((s,i)=>s+monthlyTotal(i),0);
+  const active=data.filter(isActive);const owed=active.reduce((s,i)=>s+monthlyTotal(i),0);
+  const doneItems=data.filter(i=>!isActive(i));const paid=doneItems.reduce((s,i)=>s+monthlyTotal(i),0);
   const total=owed+paid;const pct=total>0?Math.round(paid/total*100):0;
-  const t15=active.reduce((s,i)=>s+amt15(i),0);
-  const t30=active.reduce((s,i)=>s+amt30(i),0);
+  const t15=active.reduce((s,i)=>s+amt15(i),0);const t30=active.reduce((s,i)=>s+amt30(i),0);
   const tOT=active.filter(i=>i.cycle==='one-time').reduce((s,i)=>s+(+i.amount),0);
-  const rows=data.map(item=>{const act=isActive(item);const col=avCol(item.creditor);const prog=item.isInstallment?calcInstProgress(item):null;
-    return`<div style="background:var(--surface);border-bottom:.5px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px">
-      <div class="av" style="width:34px;height:34px;font-size:11px;background:${col};flex-shrink:0">${initials(item.creditor)}</div>
+
+  // Per-debtor summary
+  const grouped=groupBy(data,'creditor');
+  const debtorRows=Object.keys(grouped).map(creditor=>{
+    const items=grouped[creditor];const col=avCol(creditor);
+    const act=items.filter(isActive);
+    const d15=act.reduce((s,i)=>s+amt15(i),0);const d30=act.reduce((s,i)=>s+amt30(i),0);
+    const dOT=act.filter(i=>i.cycle==='one-time').reduce((s,i)=>s+(+i.amount),0);
+    const dTotal=act.reduce((s,i)=>s+monthlyTotal(i),0);
+    if(dTotal===0&&dOT===0)return'';
+    return`<div style="background:var(--surface);border-bottom:.5px solid var(--border);padding:11px 16px;display:flex;align-items:center;gap:10px">
+      <div class="av" style="width:34px;height:34px;font-size:11px;background:${col};flex-shrink:0">${initials(creditor)}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:600;${!act?'text-decoration:line-through;color:var(--text3)':''}">${item.desc}</div>
-        <div style="font-size:11px;color:var(--text3)">${item.creditor}
-          <span class="badge ${act?isSplit(item)?'b-split':item.cycle==='15th'?'b-15':item.cycle==='30th'?'b-30':'b-ot':'b-paid'}" style="margin-left:4px">${act?item.cycle==='one-time'?'ONE-TIME':isSplit(item)?'15TH & 30TH':'DUE '+item.cycle:'DONE'}</span>
+        <div style="font-size:13px;font-weight:700">${creditor}</div>
+        <div style="display:flex;gap:8px;margin-top:3px;flex-wrap:wrap">
+          ${d15>0?`<span style="font-size:10px;background:var(--blue-light);color:var(--blue);border-radius:6px;padding:2px 7px;font-weight:600">15th: ${fmt(d15)}</span>`:''}
+          ${d30>0?`<span style="font-size:10px;background:var(--accent-light);color:var(--accent);border-radius:6px;padding:2px 7px;font-weight:600">30th: ${fmt(d30)}</span>`:''}
+          ${dOT>0?`<span style="font-size:10px;background:var(--amber-light);color:var(--amber);border-radius:6px;padding:2px 7px;font-weight:600">One-time: ${fmt(dOT)}</span>`:''}
         </div>
-        ${prog?`<div style="font-size:10px;color:var(--text3);margin-top:2px">${isSplit(item)?prog.paidPayments+'/'+prog.totalPayments+' payments · ':''} ${prog.fullMonthsPaid}/${item.totalMonths} months</div>`:''}
       </div>
       <div style="text-align:right;flex-shrink:0">
-        <div style="font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:${act?'var(--accent)':'var(--green)'}">${fmt(monthlyTotal(item))}</div>
-        <div style="font-size:10px;color:var(--text3)">${item.cycle==='one-time'?'one-time':isSplit(item)?'15th & 30th':'/mo'}</div>
+        <div style="font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)">${fmt(dTotal)}</div>
+        <div style="font-size:10px;color:var(--text3)">this month</div>
       </div>
-    </div>`;}).join('');
+    </div>`;
+  }).join('');
+
   return`<div class="metrics-grid">
     <div class="metric"><div class="metric-lbl">Still Owed</div><div class="metric-val" style="color:var(--accent)">${fmt(owed)}</div><div class="metric-sub">${active.length} active</div></div>
     <div class="metric"><div class="metric-lbl">Settled</div><div class="metric-val" style="color:var(--green)">${fmt(paid)}</div><div class="metric-sub">${pct}% done</div></div>
@@ -907,7 +914,7 @@ function renderSummary(){
   </div>
   ${tOT>0?`<div style="margin:0 12px 10px;background:var(--amber-light);border:.5px solid rgba(224,160,48,.2);border-radius:var(--r-sm);padding:10px 14px;display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:700;color:var(--amber)">One-time payments</span><span style="font-size:16px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums">${fmt(tOT)}</span></div>`:''}
   <div class="prog-card"><div class="prog-head"><span style="color:var(--text2)">Overall progress</span><span style="font-weight:800">${pct}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>
-  <div class="sec-lbl">All Payables</div>${rows}`;
+  <div class="sec-lbl">Per Debtor — This Month</div>${debtorRows}`;
 }
 
 // ── Render ────────────────────────────────────────────────────────────
@@ -924,12 +931,18 @@ function bindEvents(){
   document.querySelectorAll('[data-section]').forEach(el=>el.onclick=()=>{
     const k=el.dataset.section;if(openSections.has(k))openSections.delete(k);else openSections.add(k);render();
   });
+  document.querySelectorAll('[data-debtor]').forEach(el=>el.onclick=()=>{
+    const k=el.dataset.debtor;if(openDebtors.has(k))openDebtors.delete(k);else openDebtors.add(k);render();
+  });
   document.querySelectorAll('[data-dl-toggle]').forEach(el=>el.onclick=e=>{
     e.stopPropagation();const item=data.find(d=>d.id===+el.dataset.dlToggle);if(item){item.paid=!item.paid;save();render();}
   });
   document.querySelectorAll('[data-goto]').forEach(el=>el.onclick=e=>{
     e.stopPropagation();const cred=el.dataset.goto;activeTab='creditors';render();
     setTimeout(()=>{const cards=document.querySelectorAll('.creditor-card');for(const c of cards){const n=c.querySelector('.cred-name');if(n&&n.textContent.trim()===cred){c.scrollIntoView({behavior:'smooth',block:'start'});c.style.outline='2px solid var(--accent)';c.style.outlineOffset='2px';setTimeout(()=>{c.style.outline='';c.style.outlineOffset='';},1500);break;}}},80);
+  });
+  document.querySelectorAll('[data-receipt],[data-receipt-hall]').forEach(el=>el.onclick=e=>{
+    e.stopPropagation();const id=+(el.dataset.receipt||el.dataset.receiptHall);openReceipt(id);
   });
   document.querySelectorAll('[data-toggle]').forEach(el=>el.onclick=()=>{const item=data.find(d=>d.id===+el.dataset.toggle);if(item){item.paid=!item.paid;save();render();}});
   document.querySelectorAll('[data-del]').forEach(el=>el.onclick=()=>{if(confirm('Remove this payable?')){data=data.filter(d=>d.id!==+el.dataset.del);save();render();}});
@@ -942,13 +955,21 @@ function bindEvents(){
     e.stopPropagation();const id=+el.dataset.sc,date=el.dataset.scDate;
     const item=data.find(d=>d.id===id);if(!item)return;
     if(!item.cutoffPaid)item.cutoffPaid={};
-    if(item.cutoffPaid[date])delete item.cutoffPaid[date];
-    else item.cutoffPaid[date]=new Date().toISOString();
+    if(item.cutoffPaid[date])delete item.cutoffPaid[date];else item.cutoffPaid[date]=new Date().toISOString();
     save();render();
   });
 }
 
-// ── Export / Import ───────────────────────────────────────────────────
+// Receipt modal events
+document.getElementById('receipt-close').onclick=()=>document.getElementById('receipt-modal').classList.remove('open');
+document.getElementById('receipt-modal').onclick=e=>{if(e.target===document.getElementById('receipt-modal'))document.getElementById('receipt-modal').classList.remove('open');};
+document.getElementById('receipt-share').onclick=()=>{
+  showToast('📸 Screenshot the white card above to share!');
+  // Scroll to top of receipt card
+  document.getElementById('receipt-card').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+// Export / Import
 function showToast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'var(--accent)':'var(--green)';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 document.getElementById('fab-export').onclick=()=>{
   const blob=new Blob([JSON.stringify({data,nextId},null,2)],{type:'application/json'});
@@ -968,10 +989,9 @@ document.getElementById('import-file').onchange=function(){
   };reader.readAsText(file);
 };
 
-// ── Modal ─────────────────────────────────────────────────────────────
+// Modal
 function syncModal(){
-  const c=document.getElementById('f-cycle').value;
-  const split=c==='both'||c==='both-custom';
+  const c=document.getElementById('f-cycle').value;const split=c==='both'||c==='both-custom';
   document.getElementById('ot-f').classList.toggle('show',c==='one-time');
   document.getElementById('start-f').classList.toggle('show',c!=='one-time');
   document.getElementById('custom-f').classList.toggle('show',c==='both-custom');
@@ -996,34 +1016,24 @@ function openModal(id,preset){
   if(id){
     const item=data.find(d=>d.id===id);
     cf.style.display='';lw.style.display='none';
-    document.getElementById('f-cred').value=item.creditor;
-    document.getElementById('f-desc').value=item.desc;
-    document.getElementById('f-amt').value=item.amount||'';
-    document.getElementById('f-cycle').value=item.cycle;
-    document.getElementById('f-cat').value=item.cat;
-    document.getElementById('f-duedate').value=item.dueDate||'';
-    document.getElementById('f-start').value=item.startDate||'';
-    document.getElementById('f-startcutoff').value=item.startCutoff||'30th';
-    document.getElementById('f-amt15').value=item.amt15||'';
-    document.getElementById('f-amt30').value=item.amt30||'';
-    const isI=item.isInstallment||false;
-    document.getElementById('f-is-inst').checked=isI;
+    document.getElementById('f-cred').value=item.creditor;document.getElementById('f-desc').value=item.desc;
+    document.getElementById('f-amt').value=item.amount||'';document.getElementById('f-cycle').value=item.cycle;
+    document.getElementById('f-cat').value=item.cat;document.getElementById('f-duedate').value=item.dueDate||'';
+    document.getElementById('f-start').value=item.startDate||'';document.getElementById('f-startcutoff').value=item.startCutoff||'30th';
+    document.getElementById('f-amt15').value=item.amt15||'';document.getElementById('f-amt30').value=item.amt30||'';
+    const isI=item.isInstallment||false;document.getElementById('f-is-inst').checked=isI;
     document.getElementById('inst-f').classList.toggle('show',isI);
     if(isI){document.getElementById('f-total').value=item.totalMonths||'';document.getElementById('f-paidmo').value=item.monthsPaid||0;}
     document.getElementById('modal-title').textContent='Edit Payable';
   }else{
     ['f-desc','f-amt','f-total','f-duedate','f-start','f-amt15','f-amt30'].forEach(x=>document.getElementById(x).value='');
-    document.getElementById('f-paidmo').value=0;
-    document.getElementById('f-cycle').value='15th';
-    document.getElementById('f-cat').value='utility';
-    document.getElementById('f-startcutoff').value='30th';
-    document.getElementById('f-is-inst').checked=false;
-    document.getElementById('inst-f').classList.remove('show');
+    document.getElementById('f-paidmo').value=0;document.getElementById('f-cycle').value='15th';
+    document.getElementById('f-cat').value='utility';document.getElementById('f-startcutoff').value='30th';
+    document.getElementById('f-is-inst').checked=false;document.getElementById('inst-f').classList.remove('show');
     if(preset){cf.style.display='none';lw.style.display='flex';document.getElementById('locked-name').textContent=preset;document.getElementById('f-cred').value=preset;document.getElementById('modal-title').textContent='Add to '+preset;}
     else{cf.style.display='';lw.style.display='none';document.getElementById('f-cred').value='';document.getElementById('modal-title').textContent='Add Payable';}
   }
-  syncModal();
-  document.getElementById('modal').classList.add('open');
+  syncModal();document.getElementById('modal').classList.add('open');
 }
 function closeModal(){document.getElementById('modal').classList.remove('open');}
 document.getElementById('fab').onclick=()=>openModal();
@@ -1031,34 +1041,19 @@ document.getElementById('modal-close').onclick=closeModal;
 document.getElementById('modal-cancel').onclick=closeModal;
 document.getElementById('modal').onclick=e=>{if(e.target===document.getElementById('modal'))closeModal();};
 document.getElementById('modal-save').onclick=()=>{
-  const creditor=document.getElementById('f-cred').value.trim();
-  const desc=document.getElementById('f-desc').value.trim();
-  const cycle=document.getElementById('f-cycle').value;
-  const cat=document.getElementById('f-cat').value;
-  const dueDate=document.getElementById('f-duedate').value||'';
-  const startDate=document.getElementById('f-start').value||'';
-  const startCutoff=document.getElementById('f-startcutoff').value||'30th';
-  const isInstallment=document.getElementById('f-is-inst').checked;
+  const creditor=document.getElementById('f-cred').value.trim();const desc=document.getElementById('f-desc').value.trim();
+  const cycle=document.getElementById('f-cycle').value;const cat=document.getElementById('f-cat').value;
+  const dueDate=document.getElementById('f-duedate').value||'';const startDate=document.getElementById('f-start').value||'';
+  const startCutoff=document.getElementById('f-startcutoff').value||'30th';const isInstallment=document.getElementById('f-is-inst').checked;
   if(!creditor||!desc){alert('Please fill creditor and description.');return;}
   let amount,amt15v=0,amt30v=0;
-  if(cycle==='both-custom'){
-    amt15v=parseFloat(document.getElementById('f-amt15').value)||0;
-    amt30v=parseFloat(document.getElementById('f-amt30').value)||0;
-    if(amt15v<=0&&amt30v<=0){alert('Please enter split amounts.');return;}
-    amount=amt15v+amt30v;
-  }else{
-    amount=parseFloat(document.getElementById('f-amt').value);
-    if(isNaN(amount)||amount<=0){alert('Please enter a valid amount.');return;}
-  }
+  if(cycle==='both-custom'){amt15v=parseFloat(document.getElementById('f-amt15').value)||0;amt30v=parseFloat(document.getElementById('f-amt30').value)||0;if(amt15v<=0&&amt30v<=0){alert('Please enter split amounts.');return;}amount=amt15v+amt30v;}
+  else{amount=parseFloat(document.getElementById('f-amt').value);if(isNaN(amount)||amount<=0){alert('Please enter a valid amount.');return;}}
   let instF={};
   if(isInstallment){const tm=parseInt(document.getElementById('f-total').value)||0;const mp=parseInt(document.getElementById('f-paidmo').value)||0;if(tm<1){alert('Please enter total months.');return;}instF={totalMonths:tm,monthsPaid:mp};}
   const entry={creditor,desc,amount,cycle,cat,paid:false,isInstallment,dueDate,startDate,startCutoff,...(cycle==='both-custom'?{amt15:amt15v,amt30:amt30v}:{}),...instF};
-  if(editId){
-    const idx=data.findIndex(d=>d.id===editId);
-    data[idx]={...data[idx],...entry};
-    if(!isInstallment){delete data[idx].totalMonths;delete data[idx].monthsPaid;}
-    if(cycle!=='both-custom'){delete data[idx].amt15;delete data[idx].amt30;}
-  }else{data.push({id:nextId++,...entry});}
+  if(editId){const idx=data.findIndex(d=>d.id===editId);data[idx]={...data[idx],...entry};if(!isInstallment){delete data[idx].totalMonths;delete data[idx].monthsPaid;}if(cycle!=='both-custom'){delete data[idx].amt15;delete data[idx].amt30;}}
+  else{data.push({id:nextId++,...entry});}
   save();closeModal();render();
 };
 
