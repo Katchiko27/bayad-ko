@@ -565,21 +565,25 @@ function openReceipt(itemId){
   const dateStr=MS[now.getMonth()]+' '+now.getDate()+', '+now.getFullYear();
   const timeStr=now.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit',hour12:true});
 
-  // Paid entries
-  const paidEntries=sched.filter(s=>ep[s.date]&&ep[s.date]!=='__auto__').sort((a,b)=>a.date.localeCompare(b.date));
-  const autoPaidEntries=sched.filter(s=>ep[s.date]==='__auto__');
-  const totalPaidAmt=sched.filter(s=>ep[s.date]).reduce((sum,s)=>sum+s.amount,0);
+  // ALL paid entries (both auto-counted and manually checked)
+  const allPaidEntries=sched.filter(s=>ep[s.date]).sort((a,b)=>a.date.localeCompare(b.date));
+  const manualPaidEntries=sched.filter(s=>ep[s.date]&&ep[s.date]!=='__auto__');
+  const totalPaidAmt=allPaidEntries.reduce((sum,s)=>sum+s.amount,0);
   const remainingAmt=item.isInstallment&&prog?Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid)*monthlyTotal(item):0;
 
-  // Build paid payments list (manual only for receipt)
+  // Build paid payments list — show ALL paid (auto + manual)
   let paymentsHTML='';
-  if(paidEntries.length>0){
+  if(allPaidEntries.length>0){
     paymentsHTML=`<div class="receipt-payments-section">
-      <div class="receipt-payments-title">Payment History</div>
-      ${paidEntries.map(s=>{
+      <div class="receipt-payments-title">Payment History (${allPaidEntries.length} payments)</div>
+      ${allPaidEntries.map(s=>{
         const[,sm,sd]=s.date.split('-').map(Number);
-        return`<div class="receipt-payment-row">
-          <div><span class="receipt-payment-date">${MS[sm-1]} ${sd}</span><span class="receipt-payment-cutoff">(${s.cutoff})</span></div>
+        const isAuto=ep[s.date]==='__auto__';
+        let tsNote='';
+        if(!isAuto){const d=new Date(ep[s.date]);const mo=MS[d.getMonth()],dy=d.getDate();let h=d.getHours(),mn=String(d.getMinutes()).padStart(2,'0');const ap=h>=12?'PM':'AM';h=h%12||12;tsNote=`<div style="font-size:10px;color:#888;margin-top:1px">Paid ${mo} ${dy} ${h}:${mn} ${ap}</div>`;}
+        else{tsNote=`<div style="font-size:10px;color:#888;margin-top:1px">From installment count</div>`;}
+        return`<div class="receipt-payment-row" style="align-items:flex-start;padding:7px 0">
+          <div><span class="receipt-payment-date">${MS[sm-1]} ${sd}</span><span class="receipt-payment-cutoff">(${s.cutoff})</span>${tsNote}</div>
           <div class="receipt-payment-amt">${fmt(s.amount)}</div>
         </div>`;
       }).join('')}
@@ -762,7 +766,19 @@ function renderCreditors(){
       if(item.isInstallment&&prog){
         const rem=Math.max(0,(item.totalMonths||0)-prog.fullMonthsPaid);const isDone=rem===0;
         const pillTxt=isDone?'Fully paid':split?`${prog.paidPayments}/${prog.totalPayments} payments · ${prog.fullMonthsPaid}/${item.totalMonths} mo`:`${prog.fullMonthsPaid}/${item.totalMonths} mo paid`;
-        instSection=`<div class="inst-wrap"><div class="inst-bar"><div class="inst-fill ${isDone?'done':''}" style="width:${pct}%"></div></div><span class="inst-pill ${isDone?'done':''}">${pillTxt}</span></div>`;
+        const paidTotal=prog.fullMonthsPaid*monthlyTotal(item);
+        const remTotal=rem*monthlyTotal(item);
+        instSection=`<div class="inst-wrap"><div class="inst-bar"><div class="inst-fill ${isDone?'done':''}" style="width:${pct}%"></div></div><span class="inst-pill ${isDone?'done':''}">${pillTxt}</span></div>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <div style="flex:1;background:var(--green-light);border-radius:7px;padding:6px 9px">
+            <div style="font-size:10px;color:var(--green);font-weight:600">Total Paid</div>
+            <div style="font-size:13px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums">${fmt(paidTotal)}</div>
+          </div>
+          <div style="flex:1;background:${isDone?'var(--green-light)':'var(--accent-light)'};border-radius:7px;padding:6px 9px">
+            <div style="font-size:10px;color:${isDone?'var(--green)':'var(--accent)'};font-weight:600">${isDone?'Complete':'Remaining'}</div>
+            <div style="font-size:13px;font-weight:800;color:${isDone?'var(--green)':'var(--accent)'};font-variant-numeric:tabular-nums">${isDone?'✓ Done':fmt(remTotal)}</div>
+          </div>
+        </div>`;
       }
       const sched=genSched(item);const ep=getEffectivePaid(item);
       const paidCnt=Object.keys(ep).length;const isOpen=openSched.has(item.id);
